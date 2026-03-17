@@ -99,5 +99,45 @@
             </main>
         </div>
     </div>
+    <!-- Scripts -->
+    <script src="js/services/logger.js"></script>
+    <script src="js/components/ComponentBase.js"></script>
+    <script src="js/app.js"></script>
+
+    <!-- Optional: Example component to test logging -->
+    <script src="js/components/exampleComponent.js"></script>
+    <script>
+        // Test the logging system immediately
+        document.addEventListener('DOMContentLoaded', () => {
+            // Create example component and test logging
+            setTimeout(() => {
+                const example = new ExampleComponent();
+                
+                // Test various log levels
+                Logger.debug('Test', 'This is a debug message');
+                Logger.info('Test', 'This is an info message');
+                Logger.warn('Test', 'This is a warning message');
+                Logger.error('Test', 'This is an error message', new Error('Test error'));
+                
+                // Test component methods with tracing
+                example.loadData().then(() => {
+                    example.selectItem(1);
+                    example.selectItem(999); // This will trigger a warning
+                });
+                
+                // Log all counters and UI elements
+                Logger.info('UI', 'Current UI state', {
+                    counters: {
+                        workbook: document.querySelector('.counter:nth-child(1)')?.textContent,
+                        profile: document.querySelector('.counter:nth-child(2)')?.textContent,
+                        environment: document.querySelector('.counter:nth-child(3)')?.textContent,
+                        tab: document.querySelector('.counter:nth-child(4)')?.textContent,
+                        link: document.querySelector('.counter:nth-child(5)')?.textContent
+                    }
+                });
+            }, 500);
+        });
+    </script>
+
 </body>
 </html>
