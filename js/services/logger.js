@@ -119,6 +119,42 @@ const Logger = {
     return messageLevelIndex >= configLevelIndex;
   },
 
+  // Add after the storeLog method or with other methods
+
+  /**
+   * Start a collapsible group in console
+   */
+  group(component, label) {
+    if (!this.shouldLog('DEBUG')) return;
+
+    const formattedLabel = this.formatMessage(component, label);
+    console.group(`📁 ${formattedLabel}`);
+
+    this.storeLog('GROUP', component, `START GROUP: ${label}`, null);
+  },
+
+  /**
+   * End a collapsible group in console
+   */
+  groupEnd(component) {
+    if (!this.shouldLog('DEBUG')) return;
+
+    console.groupEnd();
+    this.storeLog('GROUP', component, 'END GROUP', null);
+  },
+
+  /**
+   * Log a message as a collapsed group (optional)
+   */
+  groupCollapsed(component, label) {
+    if (!this.shouldLog('DEBUG')) return;
+
+    const formattedLabel = this.formatMessage(component, label);
+    console.groupCollapsed(`📁 ${formattedLabel}`);
+
+    this.storeLog('GROUP', component, `START COLLAPSED GROUP: ${label}`, null);
+  },
+
   /**
    * Store logs in memory for later inspection
    */
@@ -126,6 +162,7 @@ const Logger = {
   maxHistory: 1000,
 
   storeLog(level, component, message, data) {
+    // Add 'GROUP' to accepted levels (it's not really a level but we want to store it)
     this.logHistory.push({
       timestamp: new Date().toISOString(),
       level,
