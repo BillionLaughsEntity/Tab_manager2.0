@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tab Manager 2.0</title>
+    
+    <!-- Modular CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components/header.css">
+    <link rel="stylesheet" href="css/components/workbooks-profiles.css">
+    <link rel="stylesheet" href="css/components/sidebar.css">
+    <link rel="stylesheet" href="css/components/main-area.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header Section - Your item 1 -->
+        <header class="main-header">
+            <div class="logo-area">
+                <!-- Logo will go here -->
+                <span class="app-title">Tab Manager</span>
+            </div>
+            
+            <div class="counters">
+                <span class="counter">1 Workbook</span>
+                <span class="counter">1 Profile</span>
+                <span class="counter">1 Environment</span>
+                <span class="counter">1 Tab</span>
+                <span class="counter">1 Link</span>
+            </div>
+            
+            <div class="search-area">
+                <input type="text" placeholder="Search Results 0 results" class="search-input">
+            </div>
+            
+            <div class="service-buttons">
+                <button class="service-btn">☁️</button>
+                <button class="service-btn">⚙️</button>
+                <button class="service-btn">?</button>
+            </div>
+        </header>
+
+        <!-- Main Layout: Workbooks/Profiles + Sidebar + Main Area -->
+        <div class="main-layout">
+            <!-- Workbooks and Profiles Section - Your item 2 -->
+            <aside class="workbooks-profiles">
+                <div class="section-header">
+                    <span>Default Profile</span>
+                </div>
+                <div class="scrollable-content">
+                    <!-- Workbooks and profiles will be dynamically added here -->
+                </div>
+            </aside>
+
+            <!-- Sidebar with Environments and Tabs - Your item 3 -->
+            <aside class="environments-sidebar">
+                <div class="section-header">
+                    <span>Environments:</span>
+                    <button class="add-btn">+</button>
+                </div>
+                <div class="scrollable-content">
+                    <div class="environment-item active">General</div>
+                    <div class="environment-item">Main</div>
+                    
+                    <div class="tabs-container">
+                        <div class="section-header">
+                            <span>Tabs</span>
+                            <button class="add-btn">+</button>
+                        </div>
+                        <!-- Tabs will go here -->
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content Area - Your items 4 and 5 -->
+            <main class="main-content">
+                <div class="main-header">
+                    <div class="main-header-left">
+                        <span class="current-tab">Select a tab to get started</span>
+                    </div>
+                    <div class="main-header-right">
+                        <button class="main-action-btn">➕ Add Link</button>
+                        <button class="main-action-btn">✏️ Edit</button>
+                        <button class="main-action-btn">🗑️ Delete</button>
+                        <button class="main-action-btn">🔍 View</button>
+                    </div>
+                </div>
+
+                <div class="links-area">
+                    <div class="welcome-message">
+                        <h2>Welcome to Tab Manager</h2>
+                        <p>Create your first workbook, profile, environment and tab to get started!</p>
+                    </div>
+                    
+                    <div class="selection-status">
+                        0 items selected
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>
