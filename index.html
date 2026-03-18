@@ -8,9 +8,9 @@
     <!-- Modular CSS -->
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/components/header.css">
-    <link rel="stylesheet" href="css/components/left-panel.css">
-    <link rel="stylesheet" href="css/components/middle-panel.css">
-    <link rel="stylesheet" href="css/components/right-panel.css">
+    <link rel="stylesheet" href="css/components/top-bars.css">  <!-- New file -->
+    <link rel="stylesheet" href="css/components/sidebar.css">
+    <link rel="stylesheet" href="css/components/main-area.css">
 </head>
 <body>
     <div class="app-container">
@@ -39,205 +39,225 @@
             </div>
         </header>
 
-        <!-- Three-Panel Layout -->
-        <div class="main-layout">
-            
-            <!-- LEFT PANEL: Workbooks & Profiles (ALL visible) -->
-            <aside class="panel left-panel">
-                <!-- Workbooks Section -->
-                <div class="panel-section">
-                    <div class="section-header">
-                        <h3>Workbooks</h3>
-                        <button class="add-btn">+</button>
+        <!-- TOP BARS: Workbooks & Profiles (Horizontal Scrolling) -->
+        <div class="top-bars-container">
+            <!-- Workbooks Bar -->
+            <div class="top-bar">
+                <div class="bar-header">
+                    <span class="bar-title">Workbooks</span>
+                    <button class="bar-add-btn">+</button>
+                </div>
+                <div class="bar-items horizontal-scroll">
+                    <div class="bar-item active">
+                        <span class="item-icon">📚</span>
+                        <span class="item-name">Main</span>
+                        <span class="item-badge">17</span>
                     </div>
-                    <div class="panel-content">
-                        <!-- All workbooks visible at once -->
-                        <div class="workbook-item active">
-                            <span class="workbook-icon">📚</span>
-                            <span class="workbook-name">Main</span>
-                            <span class="item-count">3</span>
-                        </div>
-                        <div class="workbook-item">
-                            <span class="workbook-icon">📚</span>
-                            <span class="workbook-name">Personal</span>
-                            <span class="item-count">2</span>
-                        </div>
-                        <div class="workbook-item">
-                            <span class="workbook-icon">📚</span>
-                            <span class="workbook-name">Work</span>
-                            <span class="item-count">5</span>
-                        </div>
+                    <div class="bar-item">
+                        <span class="item-icon">📚</span>
+                        <span class="item-name">Personal</span>
+                        <span class="item-badge">3</span>
+                    </div>
+                    <div class="bar-item">
+                        <span class="item-icon">📚</span>
+                        <span class="item-name">Work</span>
+                        <span class="item-badge">8</span>
+                    </div>
+                    <div class="bar-item">
+                        <span class="item-icon">📚</span>
+                        <span class="item-name">Projects</span>
+                        <span class="item-badge">12</span>
+                    </div>
+                    <div class="bar-item">
+                        <span class="item-icon">📚</span>
+                        <span class="item-name">Archive</span>
+                        <span class="item-badge">5</span>
                     </div>
                 </div>
+            </div>
 
-                <!-- Profiles Section (ALL visible, separate from workbooks) -->
-                <div class="panel-section">
-                    <div class="section-header">
-                        <h3>Profiles</h3>
-                        <button class="add-btn">+</button>
+            <!-- Profiles Bar -->
+            <div class="top-bar">
+                <div class="bar-header">
+                    <span class="bar-title">Profiles</span>
+                    <button class="bar-add-btn">+</button>
+                </div>
+                <div class="bar-items horizontal-scroll">
+                    <div class="bar-item active">
+                        <span class="item-icon">👤</span>
+                        <span class="item-name">Default</span>
+                        <span class="item-badge">17</span>
                     </div>
-                    <div class="panel-content">
-                        <!-- All profiles visible at once -->
-                        <div class="profile-item active">
-                            <span class="profile-icon">👤</span>
-                            <span class="profile-name">Default</span>
-                            <span class="item-count">8</span>
+                    <div class="bar-item">
+                        <span class="item-icon">👤</span>
+                        <span class="item-name">Gaming</span>
+                        <span class="item-badge">4</span>
+                    </div>
+                    <div class="bar-item">
+                        <span class="item-icon">👤</span>
+                        <span class="item-name">Development</span>
+                        <span class="item-badge">6</span>
+                    </div>
+                    <div class="bar-item">
+                        <span class="item-icon">👤</span>
+                        <span class="item-name">Design</span>
+                        <span class="item-badge">3</span>
+                    </div>
+                    <div class="bar-item">
+                        <span class="item-icon">👤</span>
+                        <span class="item-name">Research</span>
+                        <span class="item-badge">5</span>
+                    </div>
+                    <div class="bar-item">
+                        <span class="item-icon">👤</span>
+                        <span class="item-name">Writing</span>
+                        <span class="item-badge">2</span>
+                    </div>
+                    <div class="bar-item">
+                        <span class="item-icon">👤</span>
+                        <span class="item-name">Testing</span>
+                        <span class="item-badge">4</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM LAYOUT: Sidebar + Main Area -->
+        <div class="bottom-layout">
+            <!-- SIDEBAR: Environments with nested tabs -->
+            <aside class="environments-sidebar">
+                <div class="sidebar-header">
+                    <h3>Environments</h3>
+                    <button class="add-btn">+</button>
+                </div>
+                
+                <div class="environments-container">
+                    <!-- Environment: VK -->
+                    <div class="environment-item expanded">
+                        <div class="env-header">
+                            <span class="collapse-icon">▼</span>
+                            <span class="env-icon">🌍</span>
+                            <span class="env-name">VK</span>
+                            <span class="env-count">4</span>
+                            <button class="env-menu">⋯</button>
                         </div>
-                        <div class="profile-item">
-                            <span class="profile-icon">👤</span>
-                            <span class="profile-name">Gaming</span>
-                            <span class="item-count">4</span>
+                        <div class="tabs-container">
+                            <div class="tab-item">
+                                <span class="tab-icon">📁</span>
+                                <span class="tab-name">Vk_playlists</span>
+                            </div>
+                            <div class="tab-item active">
+                                <span class="tab-icon">📁</span>
+                                <span class="tab-name">Vk_playlists_ARC</span>
+                                <span class="tab-count">3</span>
+                            </div>
+                            <div class="tab-item">
+                                <span class="tab-icon">📁</span>
+                                <span class="tab-name">Subscriptions</span>
+                            </div>
+                            <div class="tab-item">
+                                <span class="tab-icon">📁</span>
+                                <span class="tab-name">VK_longplays</span>
+                            </div>
                         </div>
-                        <div class="profile-item">
-                            <span class="profile-icon">👤</span>
-                            <span class="profile-name">Work</span>
-                            <span class="item-count">6</span>
+                    </div>
+
+                    <!-- Environment: Projects -->
+                    <div class="environment-item expanded">
+                        <div class="env-header">
+                            <span class="collapse-icon">▼</span>
+                            <span class="env-icon">🌍</span>
+                            <span class="env-name">Projects</span>
+                            <span class="env-count">6</span>
+                            <button class="env-menu">⋯</button>
+                        </div>
+                        <div class="tabs-container">
+                            <div class="tab-item">
+                                <span class="tab-icon">📁</span>
+                                <span class="tab-name">DREDGE Прохождение</span>
+                            </div>
+                            <div class="tab-item">
+                                <span class="tab-icon">📁</span>
+                                <span class="tab-name">No, I'm not a Human</span>
+                            </div>
+                            <div class="tab-item">
+                                <span class="tab-icon">📁</span>
+                                <span class="tab-name">Hell is Us</span>
+                            </div>
+                            <div class="tab-item">
+                                <span class="tab-icon">📁</span>
+                                <span class="tab-name">КУПЛИНОВ УЧИТСЯ РИСОВАТЬ</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Environment: Solutions -->
+                    <div class="environment-item expanded">
+                        <div class="env-header">
+                            <span class="collapse-icon">▼</span>
+                            <span class="env-icon">🌍</span>
+                            <span class="env-name">Solutions</span>
+                            <button class="env-menu">⋯</button>
+                        </div>
+                        <div class="tabs-container">
+                            <div class="tab-item">
+                                <span class="tab-icon">📁</span>
+                                <span class="tab-name">Select Links</span>
+                            </div>
+                            <div class="tab-item">
+                                <span class="tab-icon">📁</span>
+                                <span class="tab-name">Add Multi-Link Card</span>
+                            </div>
+                            <div class="tab-item">
+                                <span class="tab-icon">📁</span>
+                                <span class="tab-name">Create Search Link</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </aside>
 
-            <!-- MIDDLE PANEL: Environments with nested Tabs (ALL visible) -->
-            <aside class="panel middle-panel">
-                <div class="panel-section">
-                    <div class="section-header">
-                        <h3>Environments</h3>
-                        <button class="add-btn">+</button>
-                    </div>
-                    <div class="panel-content">
-                        <!-- Environment: VK (from your image) -->
-                        <div class="environment-item expanded">
-                            <div class="environment-header">
-                                <span class="collapse-icon">▼</span>
-                                <span class="environment-icon">🌍</span>
-                                <span class="environment-name">VK</span>
-                                <span class="item-count">4</span>
-                                <button class="env-actions">⋯</button>
-                            </div>
-                            <!-- Nested Tabs under VK -->
-                            <div class="tabs-container">
-                                <div class="tab-item">
-                                    <span class="tab-icon">📁</span>
-                                    <span class="tab-name">Vk_playlists</span>
-                                </div>
-                                <div class="tab-item">
-                                    <span class="tab-icon">📁</span>
-                                    <span class="tab-name">Vk_playlists_ARC</span>
-                                    <span class="item-count">3</span>
-                                </div>
-                                <div class="tab-item">
-                                    <span class="tab-icon">📁</span>
-                                    <span class="tab-name">Subscriptions</span>
-                                </div>
-                                <div class="tab-item">
-                                    <span class="tab-icon">📁</span>
-                                    <span class="tab-name">VK_longplays</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Environment: Projects (from your image) -->
-                        <div class="environment-item expanded">
-                            <div class="environment-header">
-                                <span class="collapse-icon">▼</span>
-                                <span class="environment-icon">🌍</span>
-                                <span class="environment-name">Projects</span>
-                                <span class="item-count">6</span>
-                                <button class="env-actions">⋯</button>
-                            </div>
-                            <!-- Nested Tabs under Projects -->
-                            <div class="tabs-container">
-                                <div class="tab-item">
-                                    <span class="tab-icon">📁</span>
-                                    <span class="tab-name">DREDGE Прохождение</span>
-                                </div>
-                                <div class="tab-item">
-                                    <span class="tab-icon">📁</span>
-                                    <span class="tab-name">No, I'm not a Human</span>
-                                </div>
-                                <div class="tab-item">
-                                    <span class="tab-icon">📁</span>
-                                    <span class="tab-name">Hell is Us</span>
-                                </div>
-                                <div class="tab-item">
-                                    <span class="tab-icon">📁</span>
-                                    <span class="tab-name">КУПЛИНОВ УЧИТСЯ РИСОВАТЬ</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Environment: Solutions (from your image) -->
-                        <div class="environment-item expanded">
-                            <div class="environment-header">
-                                <span class="collapse-icon">▼</span>
-                                <span class="environment-icon">🌍</span>
-                                <span class="environment-name">Solutions</span>
-                                <button class="env-actions">⋯</button>
-                            </div>
-                            <!-- Nested Tabs under Solutions -->
-                            <div class="tabs-container">
-                                <div class="tab-item">
-                                    <span class="tab-icon">📁</span>
-                                    <span class="tab-name">Select Links</span>
-                                </div>
-                                <div class="tab-item">
-                                    <span class="tab-icon">📁</span>
-                                    <span class="tab-name">Add Multi-Link Card</span>
-                                </div>
-                                <div class="tab-item">
-                                    <span class="tab-icon">📁</span>
-                                    <span class="tab-name">Create Search Link</span>
-                                </div>
-                            </div>
-                        </div>
+            <!-- MAIN AREA: Links -->
+            <main class="main-content">
+                <div class="main-header">
+                    <h2 class="current-tab">Vk_playlists_ARC</h2>
+                    <div class="main-actions">
+                        <button class="action-btn">➕ Add Link</button>
+                        <button class="action-btn">✏️ Edit</button>
+                        <button class="action-btn">🗑️ Delete</button>
+                        <button class="action-btn">🔍 View</button>
                     </div>
                 </div>
-            </aside>
 
-            <!-- RIGHT PANEL: Main content with links -->
-            <main class="panel right-panel">
-                <div class="panel-section">
-                    <div class="section-header">
-                        <h3 class="current-tab-title">Vk_playlists_ARC</h3>
-                        <div class="tab-actions">
-                            <button class="action-btn">➕ Add Link</button>
-                            <button class="action-btn">✏️ Edit</button>
-                            <button class="action-btn">🗑️ Delete</button>
-                        </div>
-                    </div>
-                    
-                    <!-- Links area matching your image -->
-                    <div class="links-container">
-                        <!-- Links from Vk_playlists_ARC -->
-                        <div class="link-item">
+                <div class="links-area">
+                    <!-- Links from Vk_playlists_ARC -->
+                    <div class="link-card">
+                        <div class="link-info">
                             <span class="link-icon">🔗</span>
                             <span class="link-name">Купинов_ARC</span>
                             <span class="link-url">https://vkvideo.ru/playlist/-56169357_1009</span>
-                            <button class="link-actions">⋯</button>
                         </div>
-                        <div class="link-item">
+                        <button class="link-menu">⋯</button>
+                    </div>
+                    
+                    <div class="link-card">
+                        <div class="link-info">
                             <span class="link-icon">🔗</span>
                             <span class="link-name">Subnautica_Arc</span>
                             <span class="link-url">https://vkvideo.ru/playlist/-56169357_1008</span>
-                            <button class="link-actions">⋯</button>
                         </div>
-                        <div class="link-item">
+                        <button class="link-menu">⋯</button>
+                    </div>
+                    
+                    <div class="link-card">
+                        <div class="link-info">
                             <span class="link-icon">🔗</span>
                             <span class="link-name">MAFIA_ARC</span>
                             <span class="link-url">https://vkvideo.ru/playlist/-56169357_1007</span>
-                            <button class="link-actions">⋯</button>
                         </div>
-                        
-                        <!-- Links from Projects (example) -->
-                        <div class="link-item">
-                            <span class="link-icon">🔗</span>
-                            <span class="link-name">DREDGE Прохождение</span>
-                            <span class="link-url">https://vkvideo.ru/playlist/-56169357_1009</span>
-                            <button class="link-actions">⋯</button>
-                        </div>
+                        <button class="link-menu">⋯</button>
                     </div>
-                    
-                    <!-- Selection status (from your image) -->
+
                     <div class="selection-status">
                         0 items selected
                     </div>

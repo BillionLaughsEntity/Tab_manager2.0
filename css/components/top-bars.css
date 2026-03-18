@@ -1,0 +1,148 @@
+/* --------------------------------
+   TOP BARS CONTAINER
+   Houses both Workbooks and Profiles bars
+-------------------------------- */
+.top-bars-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #252526;
+    border-bottom: 1px solid #3d3d3d;
+    padding: 8px 0;
+}
+
+/* --------------------------------
+   INDIVIDUAL TOP BAR
+   Each horizontal bar (Workbooks, Profiles)
+-------------------------------- */
+.top-bar {
+    display: flex;
+    align-items: center;
+    padding: 4px 12px;
+    min-height: 40px;
+}
+
+.top-bar:first-child {
+    margin-bottom: 4px;  /* Space between workbooks and profiles bars */
+}
+
+/* --------------------------------
+   BAR HEADER
+   Title and add button for each bar
+-------------------------------- */
+.bar-header {
+    display: flex;
+    align-items: center;
+    min-width: 100px;  /* Fixed width for headers */
+    padding-right: 16px;
+}
+
+.bar-title {
+    font-weight: 600;
+    color: #cccccc;
+    margin-right: 8px;
+}
+
+.bar-add-btn {
+    background: none;
+    border: 1px solid #4d4d4d;
+    color: #ffffff;
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.bar-add-btn:hover {
+    background-color: #3d3d3d;
+}
+
+/* --------------------------------
+   HORIZONTAL SCROLLING ITEMS CONTAINER
+   Enables horizontal scroll for many items
+-------------------------------- */
+.bar-items {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;      /* Enable horizontal scrolling */
+    overflow-y: hidden;
+    padding: 4px 0;
+    flex: 1;
+    scrollbar-width: thin; /* Thin scrollbar for Firefox */
+    scrollbar-color: #4d4d4d #2d2d2d;
+}
+
+/* Webkit scrollbar styling (Chrome, Safari) */
+.bar-items::-webkit-scrollbar {
+    height: 6px;
+}
+
+.bar-items::-webkit-scrollbar-track {
+    background: #2d2d2d;
+    border-radius: 3px;
+}
+
+.bar-items::-webkit-scrollbar-thumb {
+    background: #4d4d4d;
+    border-radius: 3px;
+}
+
+.bar-items::-webkit-scrollbar-thumb:hover {
+    background: #5d5d5d;
+}
+
+/* --------------------------------
+   HORIZONTAL BAR ITEM
+   Individual workbook or profile chip
+-------------------------------- */
+.bar-item {
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    background-color: #2d2d2d;
+    border: 1px solid #3d3d3d;
+    border-radius: 20px;    /* Pill shape */
+    cursor: pointer;
+    white-space: nowrap;     /* Prevent text wrapping */
+    transition: all 0.2s ease;
+}
+
+.bar-item:hover {
+    background-color: #3d3d3d;
+    border-color: #4d4d4d;
+}
+
+.bar-item.active {
+    background-color: #094771;  /* VS Code blue */
+    border-color: #007acc;
+}
+
+.bar-item.active:hover {
+    background-color: #0b5b9e;
+}
+
+.item-icon {
+    margin-right: 6px;
+    font-size: 1.1em;
+}
+
+.item-name {
+    font-weight: 500;
+    margin-right: 8px;
+}
+
+.item-badge {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 12px;
+    font-size: 0.75em;
+    min-width: 24px;
+    text-align: center;
+}
+
+.bar-item.active .item-badge {
+    background-color: rgba(255, 255, 255, 0.2);
+}
