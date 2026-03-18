@@ -1,0 +1,83 @@
+.middle-panel {
+    width: 300px;
+    background-color: #252526;
+    border-right: 1px solid #3d3d3d;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.environment-item {
+    margin-bottom: 2px;
+}
+
+.environment-header {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    background-color: #2d2d2d;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+}
+
+.environment-header:hover {
+    background-color: #3d3d3d;
+}
+
+.environment-item.expanded > .environment-header {
+    border-left-color: #007acc;
+}
+
+.collapse-icon {
+    margin-right: 6px;
+    font-size: 0.8em;
+    color: #888;
+}
+
+.environment-icon {
+    margin-right: 8px;
+}
+
+.environment-name {
+    flex: 1;
+    font-weight: 500;
+}
+
+.env-actions {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    padding: 0 4px;
+}
+
+.env-actions:hover {
+    color: #fff;
+}
+
+.tabs-container {
+    margin-left: 24px;
+    padding-left: 8px;
+    border-left: 1px solid #3d3d3d;
+}
+
+.tab-item {
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+}
+
+.tab-item:hover {
+    background-color: #2a2d2e;
+}
+
+.tab-icon {
+    margin-right: 8px;
+    color: #888;
+}
+
+.tab-name {
+    flex: 1;
+}

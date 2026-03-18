@@ -1,0 +1,40 @@
+.left-panel {
+    width: 250px;
+    background-color: #252526;
+    border-right: 1px solid #3d3d3d;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.workbook-item, .profile-item {
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+}
+
+.workbook-item:hover, .profile-item:hover {
+    background-color: #2a2d2e;
+}
+
+.workbook-item.active, .profile-item.active {
+    background-color: #2a2d2e;
+    border-left-color: #007acc;
+}
+
+.workbook-icon, .profile-icon {
+    margin-right: 8px;
+    font-size: 1.1em;
+}
+
+.workbook-name, .profile-name {
+    flex: 1;
+}
+
+.item-count {
+    color: #888;
+    font-size: 0.8em;
+    margin-left: 8px;
+}
