@@ -187,29 +187,25 @@
         </div>
     </div>
 
-    <!-- ==================== SERVICES (Core) ==================== -->
-    <!-- Logger must be first -->
-    <script src="js/services/logger.js"></script>
-
-    <!-- Data Models -->
-    <script src="js/models/dataModels.js"></script>
-
     <!-- Services -->
-    <script src="js/services/sampleData.js"></script>
+    <script src="js/services/logger.js"></script>
     <script src="js/services/storage.js"></script>
+    <script src="js/services/cloudSync.js"></script> <!-- ADD THIS LINE -->
 
-    <!-- ==================== COMPONENT BASE ==================== -->
+    <!-- Models -->
+    <script src="js/models/dataModels.js"></script>
+    <script src="js/services/sampleData.js"></script>
+
+    <!-- Component Base -->
     <script src="js/components/ComponentBase.js"></script>
 
-    <!-- ==================== UI COMPONENTS ==================== -->
-    <!-- Order matters: managers depend on each other -->
+    <!-- UI Components -->
     <script src="js/components/workbookManager.js"></script>
     <script src="js/components/profileManager.js"></script>
     <script src="js/components/environmentManager.js"></script>
     <script src="js/components/linkManager.js"></script>
 
-    <!-- ==================== MAIN APP ==================== -->
-    <!-- App must be last -->
+    <!-- Main App -->
     <script src="js/app.js"></script>
 </body>
 
