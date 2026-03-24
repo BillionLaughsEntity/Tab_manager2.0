@@ -308,6 +308,44 @@ class TabManagerApp {
         });
     }
 
+    showSyncOptions() {
+        // Show a simple sync menu
+        const options = confirm(
+            `Logged in as: ${cloudSync.user?.username}\n\n` +
+            `Options:\n` +
+            `• OK = Sync now\n` +
+            `• Cancel = Logout`
+        );
+        
+        if (options) {
+            this.syncWithCloud();
+        } else {
+            this.logoutAndSync();
+        }
+    }
+
+    async syncWithCloud() {
+        this.log.info('Syncing with cloud...');
+        const data = storage.getData();
+        const result = await cloudSync.pushData(data);
+        
+        if (result.success) {
+            alert('✅ Sync successful!');
+            this.log.info('Sync completed', { version: result.version });
+        } else {
+            alert('❌ Sync failed: ' + result.error);
+            this.log.error('Sync failed', result.error);
+        }
+    }
+
+    async logoutAndSync() {
+        if (confirm('Logout from cloud?')) {
+            cloudSync.logout();
+            alert('Logged out');
+            this.log.info('User logged out');
+        }
+    }
+
     /**
  * Show authentication modal
  */
