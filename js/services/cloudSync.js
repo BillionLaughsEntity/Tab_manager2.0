@@ -7,10 +7,11 @@
 
 class CloudSyncService {
     constructor() {
-        this.apiUrl = 'http://s.adviced.fvds.ru/api'; // Replace with your VPS IP
+        this.apiUrl = 'https://s.adviced.fvds.ru/api'; // Replace with your VPS IP
         this.token = null;
         this.user = null;
         this.isSyncing = false;
+        this.loadSavedToken();
         this.log = {
             info: (msg, data) => Logger.info('CloudSync', msg, data),
             debug: (msg, data) => Logger.debug('CloudSync', msg, data),
