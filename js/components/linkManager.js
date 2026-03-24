@@ -15,9 +15,8 @@ class LinkManager extends ComponentBase {
         this.lastClickedLinkId = null; // For shift+click range selection
         this.log.info('Initializing');
         
-        // Bind methods manually (don't use createTracedMethod for constructor)
+        // Bind only the methods that actually exist
         this.render = this.render.bind(this);
-        this.handleLinkClick = this.handleLinkClick.bind(this);
         this.addLink = this.addLink.bind(this);
         this.editLink = this.editLink.bind(this);
         this.deleteLink = this.deleteLink.bind(this);
@@ -29,6 +28,7 @@ class LinkManager extends ComponentBase {
         this.showLinkDialog = this.showLinkDialog.bind(this);
         this.getCurrentTab = this.getCurrentTab.bind(this);
         this.getCurrentContext = this.getCurrentContext.bind(this);
+        this.createLinkCard = this.createLinkCard.bind(this);
         
         // Now wrap methods with tracing after they're bound
         this.render = this.createTracedMethod('render', this.render);
@@ -98,7 +98,6 @@ class LinkManager extends ComponentBase {
         }
         
         const selectedTab = this.getCurrentTab();
-        const context = this.getCurrentContext();
         
         // Update header
         const headerTitle = this.container.querySelector('.current-tab');
@@ -264,10 +263,10 @@ class LinkManager extends ComponentBase {
     toggleLinkSelection(linkId, isSelected) {
         if (isSelected) {
             this.selectedLinks.add(linkId);
-            this.log.event('linkSelected', { linkId });
+            this.log.debug('Link selected', { linkId });
         } else {
             this.selectedLinks.delete(linkId);
-            this.log.event('linkDeselected', { linkId });
+            this.log.debug('Link deselected', { linkId });
         }
         
         // Update UI
@@ -323,7 +322,7 @@ class LinkManager extends ComponentBase {
      * Add a new link
      */
     async addLink() {
-        this.log.event('addLink');
+        this.log.debug('Adding link');
         
         const selectedTab = this.getCurrentTab();
         if (!selectedTab) {
@@ -355,7 +354,7 @@ class LinkManager extends ComponentBase {
      * Edit an existing link
      */
     async editLink(link) {
-        this.log.event('editLink', { linkId: link.id });
+        this.log.debug('Editing link', { linkId: link.id });
         
         const linkData = await this.showLinkDialog('Edit Link', {
             name: link.name,
@@ -380,7 +379,7 @@ class LinkManager extends ComponentBase {
      * Delete a single link
      */
     deleteLink(linkId) {
-        this.log.event('deleteLink', { linkId });
+        this.log.debug('Deleting link', { linkId });
         
         const selectedTab = this.getCurrentTab();
         if (!selectedTab) return;
@@ -425,7 +424,7 @@ class LinkManager extends ComponentBase {
      * Open link in new tab
      */
     openLink(link) {
-        this.log.event('openLink', { linkId: link.id, url: link.url });
+        this.log.debug('Opening link', { linkId: link.id, url: link.url });
         window.open(link.url, '_blank');
     }
 

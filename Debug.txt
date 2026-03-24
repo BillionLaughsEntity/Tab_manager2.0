@@ -1,82 +1,34 @@
-ℹ️ [2026-03-24T08:34:24.808Z] [Logger] Logger initialized 
-{config: {…}}
-logger.js:72 ℹ️ [2026-03-24T08:34:24.815Z] [Logger] Logger initialized 
-{config: {…}}
-logger.js:72 ℹ️ [2026-03-24T08:34:24.816Z] [App] 🚀 Initializing Tab Manager 2.0... 
-logger.js:72 ℹ️ [2026-03-24T08:34:24.817Z] [Storage] Initializing storage 
-logger.js:72 ℹ️ [2026-03-24T08:34:24.817Z] [Storage] Loaded existing data from localStorage 
-{workbooks: 3}
-logger.js:72 ℹ️ [2026-03-24T08:34:24.819Z] [Storage] Storage initialized successfully 
-logger.js:72 ℹ️ [2026-03-24T08:34:24.819Z] [App] Storage initialized 
-logger.js:72 ℹ️ [2026-03-24T08:34:24.943Z] [WorkbookManager] Initializing 
-logger.js:72 ℹ️ [2026-03-24T08:34:24.944Z] [ProfileManager] Initializing 
-logger.js:72 ℹ️ [2026-03-24T08:34:24.945Z] [EnvironmentManager] Initializing 
-logger.js:72 ℹ️ [2026-03-24T08:34:24.948Z] [LinkManager] Initializing 
-logger.js:94 ❌ [2026-03-24T08:34:24.948Z] [App] Failed to initialize LinkManager TypeError: Cannot read properties of undefined (reading 'bind')
-    at new LinkManager (linkManager.js:19:96)
+ℹ️ [2026-03-24T08:46:28.892Z] [Logger] Logger initialized {config: {…}}
+logger.js:72 ℹ️ [2026-03-24T08:46:28.924Z] [Logger] Logger initialized {config: {…}}
+logger.js:72 ℹ️ [2026-03-24T08:46:28.924Z] [App] 🚀 Initializing Tab Manager 2.0... 
+logger.js:72 ℹ️ [2026-03-24T08:46:28.924Z] [Storage] Initializing storage 
+logger.js:72 ℹ️ [2026-03-24T08:46:28.926Z] [Storage] Loaded existing data from localStorage {workbooks: 3}
+logger.js:72 ℹ️ [2026-03-24T08:46:28.926Z] [Storage] Storage initialized successfully 
+logger.js:72 ℹ️ [2026-03-24T08:46:28.927Z] [App] Storage initialized 
+logger.js:72 ℹ️ [2026-03-24T08:46:29.002Z] [WorkbookManager] Initializing 
+logger.js:72 ℹ️ [2026-03-24T08:46:29.003Z] [ProfileManager] Initializing 
+logger.js:72 ℹ️ [2026-03-24T08:46:29.003Z] [EnvironmentManager] Initializing 
+logger.js:72 ℹ️ [2026-03-24T08:46:29.004Z] [LinkManager] Initializing 
+logger.js:94 ❌ [2026-03-24T08:46:29.005Z] [App] Failed to initialize LinkManager TypeError: Cannot read properties of undefined (reading 'bind')
+    at new LinkManager (linkManager.js:20:53)
     at TabManagerApp.initializeManagers (app.js:146:41)
     at TabManagerApp.initialize (app.js:75:18)
-logger.js:72 ℹ️ [2026-03-24T08:34:24.948Z] [App] All managers initialized 
-{managers: Array(3)}
-logger.js:72 ℹ️ [2026-03-24T08:34:24.949Z] [App] ✅ Tab Manager 2.0 initialized successfully 
-logger.js:72 ℹ️ [2026-03-24T08:34:24.949Z] [App] Initial data stats 
-{workbooks: 3, profiles: 1, environments: 3, tabs: 15, links: 9}
-logger.js:72 ℹ️ [2026-03-24T08:34:35.626Z] [WorkbookManager] Workbook changed 
-{oldId: 'workbook_1774340627593_cbcb7sblx', newId: 'workbook_1774340627593_cbcb7sblx'}
-logger.js:83 ⚠️ [2026-03-24T08:34:37.290Z] [EnvironmentManager] No profile selected, cannot add environment 
-logger.js:72 ℹ️ [2026-03-24T08:34:47.454Z] [ProfileManager] Profile created 
-{id: 'profile_1774341287452_an0bgrcj9', name: 'test 1'}
-logger.js:72 ℹ️ [2026-03-24T08:34:56.740Z] [EnvironmentManager] Environment created 
-{id: 'env_1774341296738_1x4kgvju9', name: 'my new env'}
-3
-Tab_manager2.0/:1 Uncaught (in promise) Error: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received
-logger.js:72 ℹ️ [2026-03-24T08:35:08.327Z] [EnvironmentManager] Tab created 
-{id: 'tab_1774341308325_8zcvyjiva', name: 'New Tab', environmentId: 'env_1774341296738_1x4kgvju9'}
-logger.js:72 ℹ️ [2026-03-24T08:35:14.748Z] [EnvironmentManager] Tab created 
-{id: 'tab_1774341314745_fuk31s75m', name: 'New Tab', environmentId: 'env_1774341296738_1x4kgvju9'}
-logger.js:72 ℹ️ [2026-03-24T08:35:16.074Z] [EnvironmentManager] Tab changed 
-{tabId: 'tab_1774341308325_8zcvyjiva'}
-logger.js:72 ℹ️ [2026-03-24T08:35:16.689Z] [EnvironmentManager] Tab changed 
-{tabId: 'tab_1774341314745_fuk31s75m'}
-logger.js:72 ℹ️ [2026-03-24T08:35:17.161Z] [EnvironmentManager] Tab changed 
-{tabId: 'tab_1774341308325_8zcvyjiva'}
-logger.js:72 ℹ️ [2026-03-24T08:35:17.544Z] [EnvironmentManager] Tab changed 
-{tabId: 'tab_1774341314745_fuk31s75m'}
-logger.js:72 ℹ️ [2026-03-24T08:35:19.891Z] [WorkbookManager] Workbook changed 
-{oldId: 'workbook_1774340627593_oiaffwl8b', newId: 'workbook_1774340627593_oiaffwl8b'}
-logger.js:72 ℹ️ [2026-03-24T08:35:20.806Z] [WorkbookManager] Workbook changed 
-{oldId: 'workbook_1774340627593_j1jhns59g', newId: 'workbook_1774340627593_j1jhns59g'}
-logger.js:72 ℹ️ [2026-03-24T08:35:24.519Z] [EnvironmentManager] Tab changed 
-{tabId: 'tab_1774340627593_xk425kraa'}
-logger.js:72 ℹ️ [2026-03-24T08:35:24.805Z] [EnvironmentManager] Tab changed 
-{tabId: 'tab_1774340627593_79eleueqs'}
-logger.js:72 ℹ️ [2026-03-24T08:35:25.058Z] [EnvironmentManager] Tab changed 
-{tabId: 'tab_1774340627593_gq8ac2u4d'}
-logger.js:72 ℹ️ [2026-03-24T08:35:26.656Z] [EnvironmentManager] Tab changed 
-{tabId: 'tab_1774340627593_79eleueqs'}
-logger.js:72 ℹ️ [2026-03-24T08:35:27.594Z] [EnvironmentManager] Tab changed 
-{tabId: 'tab_1774340627593_xk425kraa'}
-logger.js:72 ℹ️ [2026-03-24T08:35:28.021Z] [EnvironmentManager] Tab changed 
-{tabId: 'tab_1774340627593_a5h1veofm'}
-logger.js:72 ℹ️ [2026-03-24T08:35:28.314Z] [EnvironmentManager] Tab changed 
-{tabId: 'tab_1774340627593_79eleueqs'}
-logger.js:72 ℹ️ [2026-03-24T08:35:33.189Z] [EnvironmentManager] Tab changed 
-{tabId: 'tab_1774340627593_94wyznf8d'}
-logger.js:72 ℹ️ [2026-03-24T08:35:33.474Z] [EnvironmentManager] Tab changed 
-{tabId: 'tab_1774340627593_cow3799lx'}
-logger.js:72 ℹ️ [2026-03-24T08:35:33.759Z] [EnvironmentManager] Tab changed 
-{tabId: 'tab_1774340627593_ycwb90tzf'}
-logger.js:72 ℹ️ [2026-03-24T08:35:37.996Z] [WorkbookManager] Workbook changed 
-{oldId: 'workbook_1774340627593_cbcb7sblx', newId: 'workbook_1774340627593_cbcb7sblx'}
-logger.js:72 ℹ️ [2026-03-24T08:35:38.686Z] [WorkbookManager] Workbook changed 
-{oldId: 'workbook_1774340627593_oiaffwl8b', newId: 'workbook_1774340627593_oiaffwl8b'}
-logger.js:72 ℹ️ [2026-03-24T08:35:39.744Z] [WorkbookManager] Workbook changed 
-{oldId: 'workbook_1774340627593_cbcb7sblx', newId: 'workbook_1774340627593_cbcb7sblx'}
-logger.js:72 ℹ️ [2026-03-24T08:35:40.696Z] [WorkbookManager] Workbook changed 
-{oldId: 'workbook_1774340627593_j1jhns59g', newId: 'workbook_1774340627593_j1jhns59g'}
-logger.js:72 ℹ️ [2026-03-24T08:36:22.778Z] [WorkbookManager] Workbook changed 
-{oldId: 'workbook_1774340627593_cbcb7sblx', newId: 'workbook_1774340627593_cbcb7sblx'}
-logger.js:83 ⚠️ [2026-03-24T08:36:28.379Z] [App] LinkManager not available 
-warn	@	logger.js:83
-warn	@	app.js:17
-(anonymous)	@	app.js:224
+error @ logger.js:94
+error @ app.js:16
+initializeManagers @ app.js:149
+initialize @ app.js:75
+await in initialize
+startApp @ app.js:357
+(anonymous) @ app.js:340
+logger.js:72 ℹ️ [2026-03-24T08:46:29.005Z] [App] All managers initialized {managers: Array(3)}
+logger.js:72 ℹ️ [2026-03-24T08:46:29.005Z] [App] ✅ Tab Manager 2.0 initialized successfully 
+logger.js:72 ℹ️ [2026-03-24T08:46:29.005Z] [App] Initial data stats {workbooks: 3, profiles: 1, environments: 1, tabs: 2, links: 0}
+logger.js:83 ⚠️ [2026-03-24T08:46:45.687Z] [App] LinkManager not available 
+warn @ logger.js:83
+warn @ app.js:17
+(anonymous) @ app.js:224
+logger.js:83 ⚠️ [2026-03-24T08:46:46.549Z] [App] LinkManager not available 
+warn @ logger.js:83
+warn @ app.js:17
+(anonymous) @ app.js:224
+logger.js:83 ⚠️ [2026-03-24T08:46:46.714Z] [App] LinkManager not available 
