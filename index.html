@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tab Manager 2.0</title>
-    
+
     <!-- Modular CSS -->
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/components/header.css">
-    <link rel="stylesheet" href="css/components/top-bars.css">  <!-- New file -->
+    <link rel="stylesheet" href="css/components/top-bars.css"> <!-- New file -->
     <link rel="stylesheet" href="css/components/sidebar.css">
     <link rel="stylesheet" href="css/components/main-area.css">
 </head>
+
 <body>
     <div class="app-container">
         <!-- Header (unchanged) -->
@@ -19,7 +21,7 @@
             <div class="logo-area">
                 <span class="app-title">Tab Manager</span>
             </div>
-            
+
             <div class="counters">
                 <span class="counter">1 Workbook</span>
                 <span class="counter">1 Profile</span>
@@ -27,11 +29,11 @@
                 <span class="counter">1 Tab</span>
                 <span class="counter">1 Link</span>
             </div>
-            
+
             <div class="search-area">
                 <input type="text" placeholder="Search Results 0 results" class="search-input">
             </div>
-            
+
             <div class="service-buttons">
                 <button class="service-btn">☁️</button>
                 <button class="service-btn">⚙️</button>
@@ -130,7 +132,7 @@
                     <h3>Environments</h3>
                     <button class="add-btn">+</button>
                 </div>
-                
+
                 <div class="environments-container">
                     <!-- Environment: VK -->
                     <div class="environment-item expanded">
@@ -239,7 +241,7 @@
                         </div>
                         <button class="link-menu">⋯</button>
                     </div>
-                    
+
                     <div class="link-card">
                         <div class="link-info">
                             <span class="link-icon">🔗</span>
@@ -248,7 +250,7 @@
                         </div>
                         <button class="link-menu">⋯</button>
                     </div>
-                    
+
                     <div class="link-card">
                         <div class="link-info">
                             <span class="link-icon">🔗</span>
@@ -266,9 +268,16 @@
         </div>
     </div>
 
+    <!-- Models -->
+    <script src="js/models/dataModels.js"></script>
+    <!-- Services -->
+    <script src="js/services/sampleData.js"></script>
+    <script src="js/services/storage.js"></script>
     <!-- Scripts -->
     <script src="js/services/logger.js"></script>
     <script src="js/components/ComponentBase.js"></script>
+    <!-- Main App -->
     <script src="js/app.js"></script>
 </body>
+
 </html>
