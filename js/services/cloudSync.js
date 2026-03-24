@@ -1,54 +1,31 @@
 // js/services/cloudSync.js
 
-/**
- * Cloud Sync Service
- * Handles synchronization with the VPS backend
- */
-
 class CloudSyncService {
     constructor() {
-        this.apiUrl = 'https://s.adviced.fvds.ru/api'; // Replace with your VPS IP
+        this.apiUrl = 'https://s.adviced.fvds.ru/api';
         this.token = null;
         this.user = null;
         this.isSyncing = false;
-        this.loadSavedToken();
-        this.log = {
-            info: (msg, data) => Logger.info('CloudSync', msg, data),
-            debug: (msg, data) => Logger.debug('CloudSync', msg, data),
-            error: (msg, error) => Logger.error('CloudSync', msg, error),
-            warn: (msg, data) => Logger.warn('CloudSync', msg, data)
-        };
         
         // Load saved token from localStorage
-        this.loadSavedToken();
-    }
-
-    /**
-     * Load saved authentication token
-     */
-    loadSavedToken() {
         const savedToken = localStorage.getItem('tabManagerToken');
         const savedUser = localStorage.getItem('tabManagerUser');
         
         if (savedToken && savedUser) {
             this.token = savedToken;
             this.user = JSON.parse(savedUser);
-            this.log.info('Loaded saved authentication');
+            console.log('CloudSync: Loaded saved session for', this.user?.username);
         }
+        
+        console.log('CloudSync: Initialized with URL', this.apiUrl);
     }
 
-    /**
-     * Check if user is authenticated
-     */
     isAuthenticated() {
         return !!this.token;
     }
 
-    /**
-     * Register a new user
-     */
     async register(username, email, password) {
-        this.log.debug('Registering user', { username, email });
+        console.log('CloudSync: Registering user', username);
         
         try {
             const response = await fetch(`${this.apiUrl}/auth/register`, {
@@ -63,26 +40,21 @@ class CloudSyncService {
                 throw new Error(data.error || 'Registration failed');
             }
             
-            // Save token and user info
             this.token = data.token;
             this.user = data.user;
             localStorage.setItem('tabManagerToken', this.token);
             localStorage.setItem('tabManagerUser', JSON.stringify(this.user));
             
-            this.log.info('User registered successfully', { userId: this.user.id });
+            console.log('CloudSync: Registration successful');
             return { success: true, user: this.user };
-            
         } catch (error) {
-            this.log.error('Registration failed', error);
+            console.error('CloudSync: Registration failed', error);
             return { success: false, error: error.message };
         }
     }
 
-    /**
-     * Login user
-     */
     async login(username, password) {
-        this.log.debug('Logging in', { username });
+        console.log('CloudSync: Logging in', username);
         
         try {
             const response = await fetch(`${this.apiUrl}/auth/login`, {
@@ -97,49 +69,35 @@ class CloudSyncService {
                 throw new Error(data.error || 'Login failed');
             }
             
-            // Save token and user info
             this.token = data.token;
             this.user = data.user;
             localStorage.setItem('tabManagerToken', this.token);
             localStorage.setItem('tabManagerUser', JSON.stringify(this.user));
             
-            this.log.info('User logged in successfully', { userId: this.user.id });
+            console.log('CloudSync: Login successful');
             return { success: true, user: this.user };
-            
         } catch (error) {
-            this.log.error('Login failed', error);
+            console.error('CloudSync: Login failed', error);
             return { success: false, error: error.message };
         }
     }
 
-    /**
-     * Logout user
-     */
     logout() {
         this.token = null;
         this.user = null;
         localStorage.removeItem('tabManagerToken');
         localStorage.removeItem('tabManagerUser');
-        this.log.info('User logged out');
+        console.log('CloudSync: Logged out');
         return { success: true };
     }
 
-    /**
-     * Push local data to cloud
-     */
-    async pushData(data, version = null) {
+    async pushData(data) {
         if (!this.isAuthenticated()) {
-            this.log.warn('Not authenticated, cannot push');
             return { success: false, error: 'Not authenticated' };
         }
         
-        if (this.isSyncing) {
-            this.log.warn('Sync already in progress');
-            return { success: false, error: 'Sync in progress' };
-        }
-        
         this.isSyncing = true;
-        this.log.debug('Pushing data to cloud');
+        console.log('CloudSync: Pushing data...');
         
         try {
             const response = await fetch(`${this.apiUrl}/sync/push`, {
@@ -148,7 +106,7 @@ class CloudSyncService {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${this.token}`
                 },
-                body: JSON.stringify({ data, version })
+                body: JSON.stringify({ data })
             });
             
             const result = await response.json();
@@ -157,33 +115,23 @@ class CloudSyncService {
                 throw new Error(result.error || 'Push failed');
             }
             
-            this.log.info('Data pushed successfully', { version: result.version });
-            return { success: true, version: result.version, lastSync: result.lastSync };
-            
+            console.log('CloudSync: Push successful', result);
+            return { success: true, version: result.version };
         } catch (error) {
-            this.log.error('Push failed', error);
+            console.error('CloudSync: Push failed', error);
             return { success: false, error: error.message };
         } finally {
             this.isSyncing = false;
         }
     }
 
-    /**
-     * Pull data from cloud
-     */
     async pullData() {
         if (!this.isAuthenticated()) {
-            this.log.warn('Not authenticated, cannot pull');
             return { success: false, error: 'Not authenticated' };
         }
         
-        if (this.isSyncing) {
-            this.log.warn('Sync already in progress');
-            return { success: false, error: 'Sync in progress' };
-        }
-        
         this.isSyncing = true;
-        this.log.debug('Pulling data from cloud');
+        console.log('CloudSync: Pulling data...');
         
         try {
             const response = await fetch(`${this.apiUrl}/sync/pull`, {
@@ -200,114 +148,20 @@ class CloudSyncService {
             }
             
             if (result.hasData) {
-                this.log.info('Data pulled successfully', { 
-                    version: result.version, 
-                    lastSync: result.lastSync 
-                });
-                return { 
-                    success: true, 
-                    data: result.data, 
-                    version: result.version,
-                    lastSync: result.lastSync
-                };
+                console.log('CloudSync: Pull successful', { version: result.version });
+                return { success: true, data: result.data, version: result.version };
             } else {
-                this.log.info('No data found on cloud');
+                console.log('CloudSync: No data on cloud');
                 return { success: true, hasData: false };
             }
-            
         } catch (error) {
-            this.log.error('Pull failed', error);
+            console.error('CloudSync: Pull failed', error);
             return { success: false, error: error.message };
         } finally {
             this.isSyncing = false;
         }
     }
-
-    /**
-     * Full sync (pull then push if needed)
-     */
-    async fullSync(localData, localVersion) {
-        this.log.debug('Starting full sync');
-        
-        // First pull to get latest cloud data
-        const pullResult = await this.pullData();
-        
-        if (!pullResult.success) {
-            return { success: false, error: pullResult.error };
-        }
-        
-        if (!pullResult.hasData) {
-            // No cloud data, push local data
-            const pushResult = await this.pushData(localData, 1);
-            return { 
-                success: pushResult.success, 
-                synced: true,
-                action: 'push',
-                ...pushResult 
-            };
-        }
-        
-        // Compare versions
-        if (pullResult.version > localVersion) {
-            // Cloud is newer, use cloud data
-            this.log.info('Cloud data is newer, using cloud version');
-            return { 
-                success: true, 
-                synced: true,
-                action: 'pull',
-                data: pullResult.data,
-                version: pullResult.version
-            };
-        } else if (localVersion > pullResult.version) {
-            // Local is newer, push to cloud
-            const pushResult = await this.pushData(localData, localVersion);
-            return { 
-                success: pushResult.success, 
-                synced: true,
-                action: 'push',
-                ...pushResult 
-            };
-        } else {
-            // Versions match, no sync needed
-            this.log.debug('Already in sync');
-            return { 
-                success: true, 
-                synced: false,
-                message: 'Already in sync'
-            };
-        }
-    }
-
-    /**
-     * Get sync history
-     */
-    async getSyncHistory() {
-        if (!this.isAuthenticated()) {
-            return { success: false, error: 'Not authenticated' };
-        }
-        
-        try {
-            const response = await fetch(`${this.apiUrl}/sync/history`, {
-                headers: {
-                    'Authorization': `Bearer ${this.token}`
-                }
-            });
-            
-            const result = await response.json();
-            
-            if (!response.ok) {
-                throw new Error(result.error || 'Failed to get history');
-            }
-            
-            return { success: true, history: result.history };
-            
-        } catch (error) {
-            this.log.error('Failed to get sync history', error);
-            return { success: false, error: error.message };
-        }
-    }
 }
 
-// Create singleton instance
-const cloudSync = new CloudSyncService();
-window.cloudSync = cloudSync;
+// Create global instance
+window.cloudSync = new CloudSyncService();

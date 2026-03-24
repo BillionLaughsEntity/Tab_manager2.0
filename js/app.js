@@ -242,11 +242,12 @@ class TabManagerApp {
         const cloudBtn = document.querySelector('.service-btn:first-child');
         if (cloudBtn) {
             cloudBtn.addEventListener('click', () => {
-                if (cloudSync.isAuthenticated()) {
-                    // Show sync options
+                if (window.cloudSync && window.cloudSync.isAuthenticated()) {
                     this.showSyncOptions();
-                } else {
+                } else if (window.cloudSync) {
                     this.showAuthModal();
+                } else {
+                    console.error('CloudSync not loaded');
                 }
             });
         }
