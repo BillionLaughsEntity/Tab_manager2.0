@@ -1,4 +1,4 @@
-// js/components/linkManager.js
+// js/components/linkManager.js - Simplified Version
 
 /**
  * Link Manager
@@ -11,11 +11,11 @@ class LinkManager extends ComponentBase {
         super('LinkManager');
         this.storage = storage;
         this.container = document.querySelector(containerSelector);
-        this.selectedLinks = new Set(); // For multi-select functionality
-        this.lastClickedLinkId = null; // For shift+click range selection
+        this.selectedLinks = new Set();
+        this.lastClickedLinkId = null;
         this.log.info('Initializing');
         
-        // Bind only the methods that actually exist
+        // Bind all methods
         this.render = this.render.bind(this);
         this.addLink = this.addLink.bind(this);
         this.editLink = this.editLink.bind(this);
@@ -30,14 +30,6 @@ class LinkManager extends ComponentBase {
         this.getCurrentContext = this.getCurrentContext.bind(this);
         this.createLinkCard = this.createLinkCard.bind(this);
         
-        // Now wrap methods with tracing after they're bound
-        this.render = this.createTracedMethod('render', this.render);
-        this.addLink = this.createTracedMethod('addLink', this.addLink);
-        this.editLink = this.createTracedMethod('editLink', this.editLink);
-        this.deleteLink = this.createTracedMethod('deleteLink', this.deleteLink);
-        this.deleteSelectedLinks = this.createTracedMethod('deleteSelectedLinks', this.deleteSelectedLinks);
-        this.openLink = this.createTracedMethod('openLink', this.openLink);
-        
         // Subscribe to storage changes
         this.unsubscribe = this.storage.subscribe(() => {
             this.log.debug('Storage changed, re-rendering');
@@ -46,6 +38,7 @@ class LinkManager extends ComponentBase {
         
         // Initial render
         this.render();
+        this.log.info('Initialized successfully');
     }
 
     /**
@@ -53,15 +46,20 @@ class LinkManager extends ComponentBase {
      */
     getCurrentTab() {
         const data = this.storage.getData();
+        if (!data.selectedWorkbookId) return null;
+        
         const selectedWorkbook = data.workbooks.find(w => w.id === data.selectedWorkbookId);
         if (!selectedWorkbook) return null;
         
+        if (!data.selectedProfileId) return null;
         const selectedProfile = selectedWorkbook.profiles.find(p => p.id === data.selectedProfileId);
         if (!selectedProfile) return null;
         
+        if (!data.selectedEnvironmentId) return null;
         const selectedEnvironment = selectedProfile.environments.find(e => e.id === data.selectedEnvironmentId);
         if (!selectedEnvironment) return null;
         
+        if (!data.selectedTabId) return null;
         const selectedTab = selectedEnvironment.tabs.find(t => t.id === data.selectedTabId);
         return selectedTab;
     }
@@ -125,7 +123,7 @@ class LinkManager extends ComponentBase {
             return;
         }
         
-        if (selectedTab.links.length === 0) {
+        if (!selectedTab.links || selectedTab.links.length === 0) {
             linksArea.innerHTML = `
                 <div class="empty-state">
                     <div class="empty-icon">🔗</div>
@@ -236,18 +234,13 @@ class LinkManager extends ComponentBase {
         card.appendChild(infoDiv);
         card.appendChild(actionsDiv);
         
-        // Click on card (but not on buttons) to toggle selection with Ctrl/Cmd
+        // Click on card to select
         card.addEventListener('click', (e) => {
             if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT') return;
             
             if (e.ctrlKey || e.metaKey) {
-                // Toggle selection
                 this.toggleLinkSelection(link.id, !isSelected);
-            } else if (e.shiftKey && this.lastClickedLinkId) {
-                // Range selection - to be implemented
-                this.selectRange(link.id);
             } else {
-                // Single selection with click
                 this.clearSelection();
                 this.toggleLinkSelection(link.id, true);
             }
@@ -309,12 +302,12 @@ class LinkManager extends ComponentBase {
         if (selectionDiv) {
             const count = this.selectedLinks.size;
             selectionDiv.textContent = `${count} item${count !== 1 ? 's' : ''} selected`;
-            
-            // Show/hide delete selected button
-            const deleteSelectedBtn = this.container?.querySelector('.delete-selected-btn');
-            if (deleteSelectedBtn) {
-                deleteSelectedBtn.style.display = count > 0 ? 'inline-flex' : 'none';
-            }
+        }
+        
+        // Show/hide delete selected button
+        const deleteSelectedBtn = this.container?.querySelector('.delete-selected-btn');
+        if (deleteSelectedBtn) {
+            deleteSelectedBtn.style.display = this.selectedLinks.size > 0 ? 'inline-flex' : 'none';
         }
     }
 
@@ -330,7 +323,6 @@ class LinkManager extends ComponentBase {
             return;
         }
         
-        // Create modal dialog for link input
         const linkData = await this.showLinkDialog('Add Link', null);
         if (!linkData) {
             this.log.debug('Link creation cancelled');
@@ -489,7 +481,6 @@ class LinkManager extends ComponentBase {
                     return;
                 }
                 
-                // Basic URL validation
                 try {
                     new URL(url);
                 } catch {
@@ -512,7 +503,6 @@ class LinkManager extends ComponentBase {
                 close();
             });
             
-            // Enter key in inputs
             nameInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') save();
             });
@@ -520,7 +510,6 @@ class LinkManager extends ComponentBase {
                 if (e.key === 'Enter') save();
             });
             
-            // Focus on name input
             nameInput.focus();
             if (existingData?.name) nameInput.select();
         });
