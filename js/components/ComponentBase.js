@@ -71,6 +71,22 @@ class ComponentBase {
       }
     };
   }
+
+  // Add this method to ComponentBase class
+
+  /**
+   * Escape HTML to prevent XSS attacks
+   */
+  escapeHtml(str) {
+      if (!str) return '';
+      return str
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+  }
+
 }
 
 // Make globally available
