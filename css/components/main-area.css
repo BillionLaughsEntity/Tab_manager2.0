@@ -361,3 +361,42 @@
         transform: translateY(0);
     }
 }
+
+.auth-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #3d3d3d;
+}
+
+.auth-tab {
+    background: none;
+    border: none;
+    padding: 8px 16px;
+    color: #888;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.auth-tab.active {
+    color: #007acc;
+    border-bottom: 2px solid #007acc;
+}
+
+.auth-panel {
+    display: none;
+}
+
+.auth-panel.active {
+    display: block;
+}
+
+.auth-status {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.auth-modal .modal {
+    max-width: 450px;
+}

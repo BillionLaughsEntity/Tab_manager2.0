@@ -1,34 +1,33 @@
-ℹ️ [2026-03-24T08:46:28.892Z] [Logger] Logger initialized {config: {…}}
-logger.js:72 ℹ️ [2026-03-24T08:46:28.924Z] [Logger] Logger initialized {config: {…}}
-logger.js:72 ℹ️ [2026-03-24T08:46:28.924Z] [App] 🚀 Initializing Tab Manager 2.0... 
-logger.js:72 ℹ️ [2026-03-24T08:46:28.924Z] [Storage] Initializing storage 
-logger.js:72 ℹ️ [2026-03-24T08:46:28.926Z] [Storage] Loaded existing data from localStorage {workbooks: 3}
-logger.js:72 ℹ️ [2026-03-24T08:46:28.926Z] [Storage] Storage initialized successfully 
-logger.js:72 ℹ️ [2026-03-24T08:46:28.927Z] [App] Storage initialized 
-logger.js:72 ℹ️ [2026-03-24T08:46:29.002Z] [WorkbookManager] Initializing 
-logger.js:72 ℹ️ [2026-03-24T08:46:29.003Z] [ProfileManager] Initializing 
-logger.js:72 ℹ️ [2026-03-24T08:46:29.003Z] [EnvironmentManager] Initializing 
-logger.js:72 ℹ️ [2026-03-24T08:46:29.004Z] [LinkManager] Initializing 
-logger.js:94 ❌ [2026-03-24T08:46:29.005Z] [App] Failed to initialize LinkManager TypeError: Cannot read properties of undefined (reading 'bind')
-    at new LinkManager (linkManager.js:20:53)
-    at TabManagerApp.initializeManagers (app.js:146:41)
-    at TabManagerApp.initialize (app.js:75:18)
-error @ logger.js:94
-error @ app.js:16
-initializeManagers @ app.js:149
-initialize @ app.js:75
-await in initialize
-startApp @ app.js:357
-(anonymous) @ app.js:340
-logger.js:72 ℹ️ [2026-03-24T08:46:29.005Z] [App] All managers initialized {managers: Array(3)}
-logger.js:72 ℹ️ [2026-03-24T08:46:29.005Z] [App] ✅ Tab Manager 2.0 initialized successfully 
-logger.js:72 ℹ️ [2026-03-24T08:46:29.005Z] [App] Initial data stats {workbooks: 3, profiles: 1, environments: 1, tabs: 2, links: 0}
-logger.js:83 ⚠️ [2026-03-24T08:46:45.687Z] [App] LinkManager not available 
-warn @ logger.js:83
-warn @ app.js:17
-(anonymous) @ app.js:224
-logger.js:83 ⚠️ [2026-03-24T08:46:46.549Z] [App] LinkManager not available 
-warn @ logger.js:83
-warn @ app.js:17
-(anonymous) @ app.js:224
-logger.js:83 ⚠️ [2026-03-24T08:46:46.714Z] [App] LinkManager not available 
+root@s:/var/www/tab-manager-api# netstat -tlnp | grep 3001
+tcp        0      0 0.0.0.0:3001            0.0.0.0:*               LISTEN      1870/node /var/www/
+root@s:/var/www/tab-manager-api# curl localhost:3001/api/health
+{"status":"ok","timestamp":"2026-03-24T10:20:07.499Z"}root@s:/var/www/tab-manager-api# curl localhost:80/api/health
+{"status":"ok","timestamp":"2026-03-24T10:20:27.774Z"}root@s:/var/www/tab-manager-api# ^C
+root@s:/var/www/tab-manager-api# curl localhost:80/api/health
+{"status":"ok","timestamp":"2026-03-24T10:20:49.747Z"}root@s:/var/www/tab-manager-api# ^C
+root@s:/var/www/tab-manager-api# cat /etc/nginx/sites-available/tab-manager-api
+server {
+    listen 80;
+    server_name s.adviced.fvds.ru;
+
+    location / {
+        proxy_pass http://localhost:3001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+root@s:/var/www/tab-manager-api# nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+root@s:/var/www/tab-manager-api# systemctl reload nginx
+root@s:/var/www/tab-manager-api# tail -5 /var/log/nginx/error.log
+2026/03/24 12:49:26 [notice] 59335#59335: using inherited sockets from "5;6;"
+2026/03/24 13:13:36 [error] 1262#1262: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 172.94.9.253, server: s.adviced.fvds.ru, request: "GET /.git/config HTTP/1.1", upstream: "http://127.0.0.1:3001/.git/config", host: "178.250.157.185"
+2026/03/24 13:14:13 [error] 1262#1262: *3 connect() failed (111: Connection refused) while connecting to upstream, client: 43.153.7.191, server: s.adviced.fvds.ru, request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:3001/", host: "178.250.157.185"
+root@s:/var/www/tab-manager-api#

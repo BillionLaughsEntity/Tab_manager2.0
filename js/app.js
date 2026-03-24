@@ -242,8 +242,12 @@ class TabManagerApp {
         const cloudBtn = document.querySelector('.service-btn:first-child');
         if (cloudBtn) {
             cloudBtn.addEventListener('click', () => {
-                this.log.info('Cloud sync clicked - to be implemented');
-                alert('Cloud sync coming soon!');
+                if (cloudSync.isAuthenticated()) {
+                    // Show sync options
+                    this.showSyncOptions();
+                } else {
+                    this.showAuthModal();
+                }
             });
         }
         
@@ -303,6 +307,171 @@ class TabManagerApp {
             if (manager.destroy) manager.destroy();
         });
     }
+
+    /**
+ * Show authentication modal
+ */
+showAuthModal() {
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="modal auth-modal">
+            <div class="modal-header">
+                <h3>Tab Manager Cloud Sync</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="login">Login</button>
+                    <button class="auth-tab" data-tab="register">Register</button>
+                </div>
+                
+                <div class="auth-panel active" id="login-panel">
+                    <div class="form-group">
+                        <label>Username or Email</label>
+                        <input type="text" id="login-username" placeholder="Enter username or email">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="login-password" placeholder="Enter password">
+                    </div>
+                    <button id="login-btn" class="modal-btn save">Login</button>
+                </div>
+                
+                <div class="auth-panel" id="register-panel">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" id="reg-username" placeholder="Choose a username">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="reg-email" placeholder="Your email address">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="reg-password" placeholder="Choose a password">
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" id="reg-confirm" placeholder="Confirm password">
+                    </div>
+                    <button id="register-btn" class="modal-btn save">Register</button>
+                </div>
+                
+                <div id="auth-status" class="auth-status"></div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Tab switching
+    const tabs = modal.querySelectorAll('.auth-tab');
+    const panels = modal.querySelectorAll('.auth-panel');
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            panels.forEach(p => p.classList.remove('active'));
+            tab.classList.add('active');
+            modal.querySelector(`#${tab.dataset.tab}-panel`).classList.add('active');
+        });
+    });
+    
+    // Login handler
+    modal.querySelector('#login-btn').addEventListener('click', async () => {
+        const username = modal.querySelector('#login-username').value;
+        const password = modal.querySelector('#login-password').value;
+        const statusDiv = modal.querySelector('#auth-status');
+        
+        statusDiv.textContent = 'Logging in...';
+        statusDiv.style.color = '#007acc';
+        
+        const result = await cloudSync.login(username, password);
+        
+        if (result.success) {
+            statusDiv.textContent = 'Login successful! Syncing...';
+            statusDiv.style.color = '#4caf50';
+            
+            // Pull data from cloud
+            const pullResult = await cloudSync.pullData();
+            
+            if (pullResult.success && pullResult.hasData) {
+                // Update local data with cloud data
+                const data = storage.getData();
+                data.workbooks = pullResult.data.workbooks;
+                data.selectedWorkbookId = pullResult.data.selectedWorkbookId;
+                data.selectedProfileId = pullResult.data.selectedProfileId;
+                data.selectedEnvironmentId = pullResult.data.selectedEnvironmentId;
+                data.selectedTabId = pullResult.data.selectedTabId;
+                storage.updateData(data);
+                
+                statusDiv.textContent = 'Sync complete!';
+            }
+            
+            setTimeout(() => modal.remove(), 1500);
+        } else {
+            statusDiv.textContent = `Error: ${result.error}`;
+            statusDiv.style.color = '#f44336';
+        }
+    });
+    
+    // Register handler
+    modal.querySelector('#register-btn').addEventListener('click', async () => {
+        const username = modal.querySelector('#reg-username').value;
+        const email = modal.querySelector('#reg-email').value;
+        const password = modal.querySelector('#reg-password').value;
+        const confirm = modal.querySelector('#reg-confirm').value;
+        const statusDiv = modal.querySelector('#auth-status');
+        
+        if (password !== confirm) {
+            statusDiv.textContent = 'Passwords do not match';
+            statusDiv.style.color = '#f44336';
+            return;
+        }
+        
+        if (password.length < 6) {
+            statusDiv.textContent = 'Password must be at least 6 characters';
+            statusDiv.style.color = '#f44336';
+            return;
+        }
+        
+        statusDiv.textContent = 'Creating account...';
+        statusDiv.style.color = '#007acc';
+        
+        const result = await cloudSync.register(username, email, password);
+        
+        if (result.success) {
+            statusDiv.textContent = 'Account created! Syncing...';
+            statusDiv.style.color = '#4caf50';
+            
+            // Push local data to cloud
+            const localData = storage.getData();
+            const pushResult = await cloudSync.pushData(localData, 1);
+            
+            if (pushResult.success) {
+                statusDiv.textContent = 'Sync complete!';
+            }
+            
+            setTimeout(() => modal.remove(), 1500);
+        } else {
+            statusDiv.textContent = `Error: ${result.error}`;
+            statusDiv.style.color = '#f44336';
+        }
+    });
+    
+    // Close button
+    modal.querySelector('.modal-close').addEventListener('click', () => modal.remove());
+    
+    // Escape key
+    const closeHandler = (e) => {
+        if (e.key === 'Escape') {
+            modal.remove();
+            document.removeEventListener('keydown', closeHandler);
+        }
+    };
+    document.addEventListener('keydown', closeHandler);
+}
 }
 
 // Add animation styles if not present
