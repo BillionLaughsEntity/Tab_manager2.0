@@ -24,3 +24,31 @@
 .tabs-container {
     margin-top: 20px;
 }
+
+/* Add Tab Button */
+.add-tab-btn {
+    width: 100%;
+    padding: 8px 12px;
+    margin-top: 8px;
+    background: none;
+    border: 1px dashed #4d4d4d;
+    color: #888;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.9em;
+}
+
+.add-tab-btn:hover {
+    background-color: #2a2d2e;
+    color: #fff;
+    border-color: #007acc;
+}
+
+/* Empty message styling */
+.empty-message {
+    padding: 20px;
+    text-align: center;
+    color: #888;
+    font-style: italic;
+}

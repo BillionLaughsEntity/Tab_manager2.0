@@ -41,85 +41,28 @@
             </div>
         </header>
 
-        <!-- TOP BARS: Workbooks & Profiles (Horizontal Scrolling) -->
+
+        <!-- Update the top bars section -->
         <div class="top-bars-container">
             <!-- Workbooks Bar -->
-            <div class="top-bar">
+            <div class="top-bar" id="workbooks-bar">
                 <div class="bar-header">
                     <span class="bar-title">Workbooks</span>
                     <button class="bar-add-btn">+</button>
                 </div>
                 <div class="bar-items horizontal-scroll">
-                    <div class="bar-item active">
-                        <span class="item-icon">📚</span>
-                        <span class="item-name">Main</span>
-                        <span class="item-badge">17</span>
-                    </div>
-                    <div class="bar-item">
-                        <span class="item-icon">📚</span>
-                        <span class="item-name">Personal</span>
-                        <span class="item-badge">3</span>
-                    </div>
-                    <div class="bar-item">
-                        <span class="item-icon">📚</span>
-                        <span class="item-name">Work</span>
-                        <span class="item-badge">8</span>
-                    </div>
-                    <div class="bar-item">
-                        <span class="item-icon">📚</span>
-                        <span class="item-name">Projects</span>
-                        <span class="item-badge">12</span>
-                    </div>
-                    <div class="bar-item">
-                        <span class="item-icon">📚</span>
-                        <span class="item-name">Archive</span>
-                        <span class="item-badge">5</span>
-                    </div>
+                    <!-- Will be populated by WorkbookManager -->
                 </div>
             </div>
 
             <!-- Profiles Bar -->
-            <div class="top-bar">
+            <div class="top-bar" id="profiles-bar">
                 <div class="bar-header">
                     <span class="bar-title">Profiles</span>
                     <button class="bar-add-btn">+</button>
                 </div>
                 <div class="bar-items horizontal-scroll">
-                    <div class="bar-item active">
-                        <span class="item-icon">👤</span>
-                        <span class="item-name">Default</span>
-                        <span class="item-badge">17</span>
-                    </div>
-                    <div class="bar-item">
-                        <span class="item-icon">👤</span>
-                        <span class="item-name">Gaming</span>
-                        <span class="item-badge">4</span>
-                    </div>
-                    <div class="bar-item">
-                        <span class="item-icon">👤</span>
-                        <span class="item-name">Development</span>
-                        <span class="item-badge">6</span>
-                    </div>
-                    <div class="bar-item">
-                        <span class="item-icon">👤</span>
-                        <span class="item-name">Design</span>
-                        <span class="item-badge">3</span>
-                    </div>
-                    <div class="bar-item">
-                        <span class="item-icon">👤</span>
-                        <span class="item-name">Research</span>
-                        <span class="item-badge">5</span>
-                    </div>
-                    <div class="bar-item">
-                        <span class="item-icon">👤</span>
-                        <span class="item-name">Writing</span>
-                        <span class="item-badge">2</span>
-                    </div>
-                    <div class="bar-item">
-                        <span class="item-icon">👤</span>
-                        <span class="item-name">Testing</span>
-                        <span class="item-badge">4</span>
-                    </div>
+                    <!-- Will be populated by ProfileManager -->
                 </div>
             </div>
         </div>
@@ -222,46 +165,22 @@
             <!-- MAIN AREA: Links -->
             <main class="main-content">
                 <div class="main-header">
-                    <h2 class="current-tab">Vk_playlists_ARC</h2>
+                    <h2 class="current-tab">No Tab Selected</h2>
                     <div class="main-actions">
-                        <button class="action-btn">➕ Add Link</button>
-                        <button class="action-btn">✏️ Edit</button>
-                        <button class="action-btn">🗑️ Delete</button>
-                        <button class="action-btn">🔍 View</button>
+                        <button class="action-btn add-link-btn">➕ Add Link</button>
+                        <button class="action-btn delete-selected-btn" style="display: none;">🗑️ Delete
+                            Selected</button>
+                        <button class="action-btn edit-btn">✏️ Edit</button>
+                        <button class="action-btn view-btn">🔍 View</button>
                     </div>
                 </div>
 
                 <div class="links-area">
-                    <!-- Links from Vk_playlists_ARC -->
-                    <div class="link-card">
-                        <div class="link-info">
-                            <span class="link-icon">🔗</span>
-                            <span class="link-name">Купинов_ARC</span>
-                            <span class="link-url">https://vkvideo.ru/playlist/-56169357_1009</span>
-                        </div>
-                        <button class="link-menu">⋯</button>
-                    </div>
-
-                    <div class="link-card">
-                        <div class="link-info">
-                            <span class="link-icon">🔗</span>
-                            <span class="link-name">Subnautica_Arc</span>
-                            <span class="link-url">https://vkvideo.ru/playlist/-56169357_1008</span>
-                        </div>
-                        <button class="link-menu">⋯</button>
-                    </div>
-
-                    <div class="link-card">
-                        <div class="link-info">
-                            <span class="link-icon">🔗</span>
-                            <span class="link-name">MAFIA_ARC</span>
-                            <span class="link-url">https://vkvideo.ru/playlist/-56169357_1007</span>
-                        </div>
-                        <button class="link-menu">⋯</button>
-                    </div>
-
-                    <div class="selection-status">
-                        0 items selected
+                    <!-- Links will be dynamically populated -->
+                    <div class="empty-state">
+                        <div class="empty-icon">📂</div>
+                        <h3>Select a Tab</h3>
+                        <p>Choose a tab from the sidebar to view its links</p>
                     </div>
                 </div>
             </main>
