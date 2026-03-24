@@ -11,15 +11,23 @@ class WorkbookManager extends ComponentBase {
         super('WorkbookManager');
         this.storage = storage;
         this.container = document.querySelector(containerSelector);
-        this.onWorkbookSelected = null; // Callback for selection
+        this.onWorkbookSelected = null;
         this.log.info('Initializing');
         
-        // Bind methods with tracing
-        this.render = this.createTracedMethod('render', this.render.bind(this));
-        this.handleWorkbookClick = this.createTracedMethod('handleWorkbookClick', this.handleWorkbookClick.bind(this));
-        this.addWorkbook = this.createTracedMethod('addWorkbook', this.addWorkbook.bind(this));
+        // Bind methods
+        this.render = this.render.bind(this);
+        this.handleWorkbookClick = this.handleWorkbookClick.bind(this);
+        this.addWorkbook = this.addWorkbook.bind(this);
+        this.deleteWorkbook = this.deleteWorkbook.bind(this);
+        this.renameWorkbook = this.renameWorkbook.bind(this);
+        this.showWorkbookContextMenu = this.showWorkbookContextMenu.bind(this);
         
-        // Subscribe to storage changes
+        // Wrap with tracing
+        this.render = this.createTracedMethod('render', this.render);
+        this.handleWorkbookClick = this.createTracedMethod('handleWorkbookClick', this.handleWorkbookClick);
+        this.addWorkbook = this.createTracedMethod('addWorkbook', this.addWorkbook);
+        
+        // Subscribe and render
         this.unsubscribe = this.storage.subscribe(() => {
             this.log.debug('Storage changed, re-rendering');
             this.render();

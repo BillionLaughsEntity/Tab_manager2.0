@@ -45,31 +45,30 @@ class ComponentBase {
    * @param {Function} fn - The method to wrap
    */
   createTracedMethod(methodName, fn) {
-    return (...args) => {
-      this.log.trace(`➡️ Entering ${methodName}`, { args });
-      try {
-        const result = fn.apply(this, args);
-
-        // Handle promises
-        if (result && result.then) {
-          return result
-            .then((res) => {
-              this.log.trace(`⬅️ Exiting ${methodName} (Promise resolved)`, { result: res });
-              return res;
-            })
-            .catch((err) => {
-              this.log.error(`❌ ${methodName} promise rejected`, err);
-              throw err;
-            });
-        }
-
-        this.log.trace(`⬅️ Exiting ${methodName}`, { result });
-        return result;
-      } catch (error) {
-        this.log.error(`❌ ${methodName} threw error`, error);
-        throw error;
-      }
-    };
+      const self = this;
+      return function(...args) {
+          self.log.trace(`➡️ Entering ${methodName}`, { args });
+          try {
+              const result = fn.apply(self, args);
+              
+              // Handle promises
+              if (result && result.then) {
+                  return result.then(res => {
+                      self.log.trace(`⬅️ Exiting ${methodName} (Promise resolved)`, { result: res });
+                      return res;
+                  }).catch(err => {
+                      self.log.error(`❌ ${methodName} promise rejected`, err);
+                      throw err;
+                  });
+              }
+              
+              self.log.trace(`⬅️ Exiting ${methodName}`, { result });
+              return result;
+          } catch (error) {
+              self.log.error(`❌ ${methodName} threw error`, error);
+              throw error;
+          }
+      };
   }
 
   // Add this method to ComponentBase class

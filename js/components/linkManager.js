@@ -12,16 +12,31 @@ class LinkManager extends ComponentBase {
         this.storage = storage;
         this.container = document.querySelector(containerSelector);
         this.selectedLinks = new Set(); // For multi-select functionality
+        this.lastClickedLinkId = null; // For shift+click range selection
         this.log.info('Initializing');
         
-        // Bind methods with tracing
-        this.render = this.createTracedMethod('render', this.render.bind(this));
-        this.handleLinkClick = this.createTracedMethod('handleLinkClick', this.handleLinkClick.bind(this));
-        this.addLink = this.createTracedMethod('addLink', this.addLink.bind(this));
-        this.editLink = this.createTracedMethod('editLink', this.editLink.bind(this));
-        this.deleteLink = this.createTracedMethod('deleteLink', this.deleteLink.bind(this));
-        this.deleteSelectedLinks = this.createTracedMethod('deleteSelectedLinks', this.deleteSelectedLinks.bind(this));
-        this.openLink = this.createTracedMethod('openLink', this.openLink.bind(this));
+        // Bind methods manually (don't use createTracedMethod for constructor)
+        this.render = this.render.bind(this);
+        this.handleLinkClick = this.handleLinkClick.bind(this);
+        this.addLink = this.addLink.bind(this);
+        this.editLink = this.editLink.bind(this);
+        this.deleteLink = this.deleteLink.bind(this);
+        this.deleteSelectedLinks = this.deleteSelectedLinks.bind(this);
+        this.openLink = this.openLink.bind(this);
+        this.toggleLinkSelection = this.toggleLinkSelection.bind(this);
+        this.clearSelection = this.clearSelection.bind(this);
+        this.updateSelectionStatus = this.updateSelectionStatus.bind(this);
+        this.showLinkDialog = this.showLinkDialog.bind(this);
+        this.getCurrentTab = this.getCurrentTab.bind(this);
+        this.getCurrentContext = this.getCurrentContext.bind(this);
+        
+        // Now wrap methods with tracing after they're bound
+        this.render = this.createTracedMethod('render', this.render);
+        this.addLink = this.createTracedMethod('addLink', this.addLink);
+        this.editLink = this.createTracedMethod('editLink', this.editLink);
+        this.deleteLink = this.createTracedMethod('deleteLink', this.deleteLink);
+        this.deleteSelectedLinks = this.createTracedMethod('deleteSelectedLinks', this.deleteSelectedLinks);
+        this.openLink = this.createTracedMethod('openLink', this.openLink);
         
         // Subscribe to storage changes
         this.unsubscribe = this.storage.subscribe(() => {
@@ -29,6 +44,7 @@ class LinkManager extends ComponentBase {
             this.render();
         });
         
+        // Initial render
         this.render();
     }
 

@@ -14,11 +14,27 @@ class EnvironmentManager extends ComponentBase {
         this.onTabSelected = null;
         this.log.info('Initializing');
         
-        this.render = this.createTracedMethod('render', this.render.bind(this));
-        this.handleEnvironmentToggle = this.createTracedMethod('handleEnvironmentToggle', this.handleEnvironmentToggle.bind(this));
-        this.handleTabClick = this.createTracedMethod('handleTabClick', this.handleTabClick.bind(this));
-        this.addEnvironment = this.createTracedMethod('addEnvironment', this.addEnvironment.bind(this));
-        this.addTab = this.createTracedMethod('addTab', this.addTab.bind(this));
+        // Bind methods
+        this.render = this.render.bind(this);
+        this.handleEnvironmentToggle = this.handleEnvironmentToggle.bind(this);
+        this.handleEnvironmentClick = this.handleEnvironmentClick.bind(this);
+        this.handleTabClick = this.handleTabClick.bind(this);
+        this.addEnvironment = this.addEnvironment.bind(this);
+        this.addTab = this.addTab.bind(this);
+        this.deleteEnvironment = this.deleteEnvironment.bind(this);
+        this.deleteTab = this.deleteTab.bind(this);
+        this.renameEnvironment = this.renameEnvironment.bind(this);
+        this.renameTab = this.renameTab.bind(this);
+        this.showEnvironmentContextMenu = this.showEnvironmentContextMenu.bind(this);
+        this.showTabContextMenu = this.showTabContextMenu.bind(this);
+        this.createContextMenu = this.createContextMenu.bind(this);
+        
+        // Wrap with tracing
+        this.render = this.createTracedMethod('render', this.render);
+        this.handleEnvironmentToggle = this.createTracedMethod('handleEnvironmentToggle', this.handleEnvironmentToggle);
+        this.handleTabClick = this.createTracedMethod('handleTabClick', this.handleTabClick);
+        this.addEnvironment = this.createTracedMethod('addEnvironment', this.addEnvironment);
+        this.addTab = this.createTracedMethod('addTab', this.addTab);
         
         this.unsubscribe = this.storage.subscribe(() => {
             this.log.debug('Storage changed, re-rendering');

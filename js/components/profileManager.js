@@ -12,9 +12,18 @@ class ProfileManager extends ComponentBase {
         this.container = document.querySelector(containerSelector);
         this.log.info('Initializing');
         
-        this.render = this.createTracedMethod('render', this.render.bind(this));
-        this.handleProfileClick = this.createTracedMethod('handleProfileClick', this.handleProfileClick.bind(this));
-        this.addProfile = this.createTracedMethod('addProfile', this.addProfile.bind(this));
+        // Bind methods
+        this.render = this.render.bind(this);
+        this.handleProfileClick = this.handleProfileClick.bind(this);
+        this.addProfile = this.addProfile.bind(this);
+        this.deleteProfile = this.deleteProfile.bind(this);
+        this.renameProfile = this.renameProfile.bind(this);
+        this.showProfileContextMenu = this.showProfileContextMenu.bind(this);
+        
+        // Wrap with tracing
+        this.render = this.createTracedMethod('render', this.render);
+        this.handleProfileClick = this.createTracedMethod('handleProfileClick', this.handleProfileClick);
+        this.addProfile = this.createTracedMethod('addProfile', this.addProfile);
         
         this.unsubscribe = this.storage.subscribe(() => {
             this.log.debug('Storage changed, re-rendering');
