@@ -328,7 +328,6 @@ class TabManagerApp {
     async syncWithCloud() {
         this.log.info('Syncing with cloud...');
         
-        // Show syncing status
         const statusMsg = document.createElement('div');
         statusMsg.textContent = '🔄 Syncing...';
         statusMsg.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background: #094771; color: white; padding: 10px 20px; border-radius: 8px; z-index: 10000;';
@@ -340,17 +339,27 @@ class TabManagerApp {
         statusMsg.remove();
         
         if (result.success) {
-            // Show detailed success message
             const summary = result.summary;
+            
+            // Verify counts match what you expect
+            const expectedEnv = 5;
+            const actualEnv = summary.environments;
+            
+            let verificationMsg = '';
+            if (actualEnv !== expectedEnv) {
+                verificationMsg = `\n⚠️ Warning: Expected ${expectedEnv} environments, but found ${actualEnv}. Some environments may not be saved!`;
+            }
+            
             const message = [
                 '✅ Cloud Sync Successful!',
                 '',
-                '📊 Uploaded:',
+                '📊 Uploaded Summary:',
                 `   📚 Workbooks: ${summary.workbooks}`,
                 `   👤 Profiles: ${summary.profiles}`,
                 `   🌍 Environments: ${summary.environments}`,
                 `   📑 Tabs: ${summary.tabs}`,
                 `   🔗 Links: ${summary.links}`,
+                verificationMsg,
                 '',
                 `📌 Version: ${result.version}`,
                 `🕐 Last sync: ${new Date().toLocaleString()}`
@@ -359,24 +368,7 @@ class TabManagerApp {
             alert(message);
             this.log.info('Sync completed', { version: result.version, summary });
         } else {
-            // Show detailed error message
-            const summary = result.summary || { workbooks: 0, profiles: 0, environments: 0, tabs: 0, links: 0 };
-            const message = [
-                '❌ Cloud Sync Failed!',
-                '',
-                '📊 Attempted to upload:',
-                `   📚 Workbooks: ${summary.workbooks}`,
-                `   👤 Profiles: ${summary.profiles}`,
-                `   🌍 Environments: ${summary.environments}`,
-                `   📑 Tabs: ${summary.tabs}`,
-                `   🔗 Links: ${summary.links}`,
-                '',
-                `Error: ${result.error}`,
-                '',
-                '💡 Tip: Check your internet connection and try again.'
-            ].join('\n');
-            
-            alert(message);
+            alert(`❌ Cloud Sync Failed!\n\nError: ${result.error}`);
             this.log.error('Sync failed', result.error);
         }
     }

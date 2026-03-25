@@ -217,23 +217,24 @@ class CloudSyncService {
         let totalTabs = 0;
         let totalLinks = 0;
         
-        if (data.workbooks) {
+        if (data.workbooks && Array.isArray(data.workbooks)) {
             totalWorkbooks = data.workbooks.length;
             
+            // Loop through ALL workbooks
             data.workbooks.forEach(workbook => {
-                if (workbook.profiles) {
+                if (workbook.profiles && Array.isArray(workbook.profiles)) {
                     totalProfiles += workbook.profiles.length;
                     
                     workbook.profiles.forEach(profile => {
-                        if (profile.environments) {
+                        if (profile.environments && Array.isArray(profile.environments)) {
                             totalEnvironments += profile.environments.length;
                             
                             profile.environments.forEach(environment => {
-                                if (environment.tabs) {
+                                if (environment.tabs && Array.isArray(environment.tabs)) {
                                     totalTabs += environment.tabs.length;
                                     
                                     environment.tabs.forEach(tab => {
-                                        if (tab.links) {
+                                        if (tab.links && Array.isArray(tab.links)) {
                                             totalLinks += tab.links.length;
                                         }
                                     });

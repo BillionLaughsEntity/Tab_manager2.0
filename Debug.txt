@@ -1,33 +1,60 @@
-root@s:/var/www/tab-manager-api# netstat -tlnp | grep 3001
-tcp        0      0 0.0.0.0:3001            0.0.0.0:*               LISTEN      1870/node /var/www/
-root@s:/var/www/tab-manager-api# curl localhost:3001/api/health
-{"status":"ok","timestamp":"2026-03-24T10:20:07.499Z"}root@s:/var/www/tab-manager-api# curl localhost:80/api/health
-{"status":"ok","timestamp":"2026-03-24T10:20:27.774Z"}root@s:/var/www/tab-manager-api# ^C
-root@s:/var/www/tab-manager-api# curl localhost:80/api/health
-{"status":"ok","timestamp":"2026-03-24T10:20:49.747Z"}root@s:/var/www/tab-manager-api# ^C
-root@s:/var/www/tab-manager-api# cat /etc/nginx/sites-available/tab-manager-api
-server {
-    listen 80;
-    server_name s.adviced.fvds.ru;
+const data = storage.getData();
+console.log('All workbooks:', data.workbooks.length);
+data.workbooks.forEach((wb, i) => {
+    console.log(`Workbook ${i+1}: ${wb.name}`);
+    console.log(`  Profiles: ${wb.profiles.length}`);
+    wb.profiles.forEach((p, j) => {
+        console.log(`    Profile ${j+1}: ${p.name} - Environments: ${p.environments.length}`);
+        p.environments.forEach((e, k) => {
+            console.log(`      Environment ${k+1}: ${e.name} - Tabs: ${e.tabs.length}`);
+        });
+    });
+});
+VM380:2 All workbooks: 3
+VM380:4 Workbook 1: Main
+VM380:5   Profiles: 1
+VM380:7     Profile 1: Default - Environments: 3
+VM380:9       Environment 1: VK - Tabs: 4
+VM380:9       Environment 2: Projects - Tabs: 6
+VM380:9       Environment 3: Solutions - Tabs: 5
+VM380:4 Workbook 2: Personal
+VM380:5   Profiles: 1
+VM380:7     Profile 1: test 1 - Environments: 1
+VM380:9       Environment 1: my new env - Tabs: 2
+VM380:4 Workbook 3: Work
+VM380:5   Profiles: 1
+VM380:7     Profile 1: New Profile1 - Environments: 1
+VM380:9       Environment 1: Personal - Tabs: 1
 
-    location / {
-        proxy_pass http://localhost:3001;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
-root@s:/var/www/tab-manager-api# nginx -t
-nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
-nginx: configuration file /etc/nginx/nginx.conf test is successful
-root@s:/var/www/tab-manager-api# systemctl reload nginx
-root@s:/var/www/tab-manager-api# tail -5 /var/log/nginx/error.log
-2026/03/24 12:49:26 [notice] 59335#59335: using inherited sockets from "5;6;"
-2026/03/24 13:13:36 [error] 1262#1262: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 172.94.9.253, server: s.adviced.fvds.ru, request: "GET /.git/config HTTP/1.1", upstream: "http://127.0.0.1:3001/.git/config", host: "178.250.157.185"
-2026/03/24 13:14:13 [error] 1262#1262: *3 connect() failed (111: Connection refused) while connecting to upstream, client: 43.153.7.191, server: s.adviced.fvds.ru, request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:3001/", host: "178.250.157.185"
-root@s:/var/www/tab-manager-api#
+
+
+
+
+sqlite> SELECT
+   ...>     u.username,
+   ...>     json_extract(ud.data, '$.workbooks') as full_data
+   ...> FROM users u
+   ...> JOIN user_data ud ON u.id = ud.user_id
+   ...> WHERE u.username = 'EgoBrain';
+EgoBrain|[{"id":"workbook_1774420285124_sg65470s0","name":"Main","profiles":[{"id":"profile_1774420285124_9xzkbg9gj","name":"Default","environments":[{"id":"env_1774420285124_7ej7j8vcd","name":"VK","tabs":[{"id":"tab_1774420285123_2bw14l2zr","name":"Vk_playlists","links":[],"createdAt":"2026-03-25T06:32:17.518Z","updatedAt":"2026-03-25T06:32:17.518Z"},{"id":"tab_1774420285123_0ezoz4heb","name":"Vk_playlists_ARC","links":[{"id":"link_1774420285123_9tbtsezso","name":"Купинов_ARC","url":"https://vkvideo.ru/playlist/-56169357_1009","description":"","createdAt":"2026-03-25T06:32:17.518Z","updatedAt":"2026-03-25T06:32:17.518Z","favicon":"https://www.google.com/s2/favicons?domain=vkvideo.ru&sz=32"},{"id":"link_1774420285123_66qfbskhq","name":"Subnautica_Arc","url":"https://vkvideo.ru/playlist/-56169357_1008","description":"","createdAt":"2026-03-25T06:32:17.519Z","updatedAt":"2026-03-25T06:32:17.519Z","favicon":"https://www.google.com/s2/favicons?domain=vkvideo.ru&sz=32"},{"id":"link_1774420285123_zthqh0h8e","name":"MAFIA_ARC","url":"https://vkvideo.ru/playlist/-56169357_1007","description":"","createdAt":"2026-03-25T06:32:17.519Z","updatedAt":"2026-03-25T06:32:17.519Z","favicon":"https://www.google.com/s2/favicons?domain=vkvideo.ru&sz=32"}],"createdAt":"2026-03-25T06:32:17.519Z","updatedAt":"2026-03-25T06:32:17.519Z"},{"id":"tab_1774420285123_ecnoop8di","name":"Subscriptions","links":[],"createdAt":"2026-03-25T06:32:17.519Z","updatedAt":"2026-03-25T06:32:17.519Z"},{"id":"tab_1774420285123_kpa7ho016","name":"VK_longplays","links":[],"createdAt":"2026-03-25T06:32:17.519Z","updatedAt":"2026-03-25T06:32:17.519Z"}],"isExpanded":true,"createdAt":"2026-03-25T06:32:17.519Z","updatedAt":"2026-03-25T06:32:17.519Z"},{"id":"env_1774420285124_4gxk0fn1l","name":"Projects","tabs":[{"id":"tab_1774420285123_0k1k2nsuf","name":"DREDGE Прохождение","links":[{"id":"link_1774420285123_1ajxyq1o7","name":"DREDGE Playlist","url":"https://vkvideo.ru/playlist/-56169357_1009","description":"","createdAt":"2026-03-25T06:32:17.519Z","updatedAt":"2026-03-25T06:32:17.519Z","favicon":"https://www.google.com/s2/favicons?domain=vkvideo.ru&sz=32"}],"createdAt":"2026-03-25T06:32:17.519Z","updatedAt":"2026-03-25T06:32:17.519Z"},{"id":"tab_1774420285124_h1xzsfg1q","name":"No, I'm not a Human","links":[{"id":"link_1774420285124_dd521b1q1","name":"Game Playlist","url":"https://vkvideo.ru/playlist/-56169357_1009","description":"","createdAt":"2026-03-25T06:32:17.519Z","updatedAt":"2026-03-25T06:32:17.519Z","favicon":"https://www.google.com/s2/favicons?domain=vkvideo.ru&sz=32"}],"createdAt":"2026-03-25T06:32:17.519Z","updatedAt":"2026-03-25T06:32:17.519Z"},{"id":"tab_1774420285124_h8v1gtq9d","name":"Hell is Us","links":[{"id":"link_1774420285124_u2gjl8k0i","name":"Hell is Us Playlist","url":"https://vkvideo.ru/playlist/-56169357_1008","description":"","createdAt":"2026-03-25T06:32:17.519Z","updatedAt":"2026-03-25T06:32:17.519Z","favicon":"https://www.google.com/s2/favicons?domain=vkvideo.ru&sz=32"}],"createdAt":"2026-03-25T06:32:17.519Z","updatedAt":"2026-03-25T06:32:17.519Z"},{"id":"tab_1774420285124_sgy4oyd4p","name":"КУПЛИНОВ УЧИТСЯ РИСОВАТЬ","links":[{"id":"link_1774420285124_2blvs82e3","name":"Drawing Series","url":"https://vkvideo.ru/playlist/-56169357_4043","description":"","createdAt":"2026-03-25T06:32:17.519Z","updatedAt":"2026-03-25T06:32:17.519Z","favicon":"https://www.google.com/s2/favicons?domain=vkvideo.ru&sz=32"}],"createdAt":"2026-03-25T06:32:17.519Z","updatedAt":"2026-03-25T06:32:17.519Z"},{"id":"tab_1774420285124_k5ncr1d7p","name":"Thank Goodness You're Here!","links":[{"id":"link_1774420285124_u309dkhfi","name":"Game Walkthrough","url":"https://vkvideo.ru/playlist/-56169357_1027","description":"","createdAt":"2026-03-25T06:32:17.519Z","updatedAt":"2026-03-25T06:32:17.519Z","favicon":"https://www.google.com/s2/favicons?domain=vkvideo.ru&sz=32"}],"createdAt":"2026-03-25T06:32:17.519Z","updatedAt":"2026-03-25T06:32:17.519Z"},{"id":"tab_1774420285124_u3krp32tz","name":"Rock of Ages Прохождение","links":[{"id":"link_1774420285124_55fjcjuts","name":"Rock of Ages Playlist","url":"https://vkvideo.ru/playlist/-56169357_3402","description":"","createdAt":"2026-03-25T06:32:17.519Z","updatedAt":"2026-03-25T06:32:17.519Z","favicon":"https://www.google.com/s2/favicons?domain=vkvideo.ru&sz=32"}],"createdAt":"2026-03-25T06:32:17.519Z","updatedAt":"2026-03-25T06:32:17.519Z"}],"isExpanded":true,"createdAt":"2026-03-25T06:32:17.519Z","updatedAt":"2026-03-25T06:32:17.519Z"},{"id":"env_1774420285124_qyht54f1m","name":"Solutions","tabs":[{"id":"tab_1774420285124_3zjkjesm0","name":"Select Links","links":[],"createdAt":"2026-03-25T06:32:17.520Z","updatedAt":"2026-03-25T06:32:17.521Z"},{"id":"tab_1774420285124_9z2ji5dx3","name":"Add Multi-Link Card","links":[],"createdAt":"2026-03-25T06:32:17.521Z","updatedAt":"2026-03-25T06:32:17.521Z"},{"id":"tab_1774420285124_jdfmw3tnl","name":"Create Search Link","links":[],"createdAt":"2026-03-25T06:32:17.521Z","updatedAt":"2026-03-25T06:32:17.521Z"},{"id":"tab_1774420285124_zqd4qco3x","name":"Create Outlook Email","links":[],"createdAt":"2026-03-25T06:32:17.521Z","updatedAt":"2026-03-25T06:32:17.521Z"},{"id":"tab_1774420285124_8ge2dnvhk","name":"Add Link","links":[],"createdAt":"2026-03-25T06:32:17.521Z","updatedAt":"2026-03-25T06:32:17.521Z"}],"isExpanded":true,"createdAt":"2026-03-25T06:32:17.521Z","updatedAt":"2026-03-25T06:32:17.521Z"}],"createdAt":"2026-03-25T06:32:17.521Z","updatedAt":"2026-03-25T06:32:17.521Z"}],"createdAt":"2026-03-25T06:32:17.521Z","updatedAt":"2026-03-25T06:32:17.521Z"},{"id":"workbook_1774420285124_pfroix0xb","name":"Personal","profiles":[],"createdAt":"2026-03-25T06:32:17.521Z","updatedAt":"2026-03-25T06:32:17.521Z"},{"id":"workbook_1774420285124_3830y3izk","name":"Work","profiles":[],"createdAt":"2026-03-25T06:32:17.521Z","updatedAt":"2026-03-25T06:32:17.521Z"}]
+sqlite> EOF
+
+
+
+
+sqlite> WITH RECURSIVE
+   ...> workbook_count AS (SELECT json_each.value FROM users u, json_each(json_extract(ud.data, '$.workbooks'))
+(x1...>     JOIN user_data ud ON u.id = ud.user_id WHERE u.username = 'EgoBrain'),
+   ...> profile_count AS (SELECT json_each.value FROM users u, json_each(json_extract(ud.data, '$.workbooks')) as w,
+(x1...>     json_each(json_extract(w.value, '$.profiles'))
+(x1...>     JOIN user_data ud ON u.id = ud.user_id WHERE u.username = 'EgoBrain'),
+   ...> env_count AS (SELECT json_each.value FROM users u, json_each(json_extract(ud.data, '$.workbooks')) as w,
+(x1...>     json_each(json_extract(w.value, '$.profiles')) as p,
+(x1...>     json_each(json_extract(p.value, '$.environments'))
+(x1...>     JOIN user_data ud ON u.id = ud.user_id WHERE u.username = 'EgoBrain')
+   ...> SELECT
+   ...>     (SELECT COUNT(*) FROM workbook_count) as workbooks,
+   ...>     (SELECT COUNT(*) FROM profile_count) as profiles,
+   ...>     (SELECT COUNT(*) FROM env_count) as environments;
+3|1|3
+sqlite>
