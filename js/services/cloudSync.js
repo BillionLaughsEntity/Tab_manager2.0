@@ -161,6 +161,98 @@ class CloudSyncService {
             this.isSyncing = false;
         }
     }
+
+
+    async pushDataWithSummary(data) {
+        if (!this.isAuthenticated()) {
+            return { success: false, error: 'Not authenticated' };
+        }
+        
+        this.isSyncing = true;
+        console.log('CloudSync: Pushing data with summary...');
+        
+        // Calculate summary of what's being sent
+        const summary = this.calculateDataSummary(data);
+        
+        try {
+            const response = await fetch(`${this.apiUrl}/sync/push`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.token}`
+                },
+                body: JSON.stringify({ data })
+            });
+            
+            const result = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(result.error || 'Push failed');
+            }
+            
+            console.log('CloudSync: Push successful', result);
+            return { 
+                success: true, 
+                version: result.version,
+                summary: summary,
+                pushed: true
+            };
+        } catch (error) {
+            console.error('CloudSync: Push failed', error);
+            return { 
+                success: false, 
+                error: error.message,
+                summary: summary,
+                pushed: false
+            };
+        } finally {
+            this.isSyncing = false;
+        }
+    }
+
+    calculateDataSummary(data) {
+        let totalWorkbooks = 0;
+        let totalProfiles = 0;
+        let totalEnvironments = 0;
+        let totalTabs = 0;
+        let totalLinks = 0;
+        
+        if (data.workbooks) {
+            totalWorkbooks = data.workbooks.length;
+            
+            data.workbooks.forEach(workbook => {
+                if (workbook.profiles) {
+                    totalProfiles += workbook.profiles.length;
+                    
+                    workbook.profiles.forEach(profile => {
+                        if (profile.environments) {
+                            totalEnvironments += profile.environments.length;
+                            
+                            profile.environments.forEach(environment => {
+                                if (environment.tabs) {
+                                    totalTabs += environment.tabs.length;
+                                    
+                                    environment.tabs.forEach(tab => {
+                                        if (tab.links) {
+                                            totalLinks += tab.links.length;
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+        
+        return {
+            workbooks: totalWorkbooks,
+            profiles: totalProfiles,
+            environments: totalEnvironments,
+            tabs: totalTabs,
+            links: totalLinks
+        };
+    }
 }
 
 // Create global instance

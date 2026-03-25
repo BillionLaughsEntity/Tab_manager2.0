@@ -327,16 +327,131 @@ class TabManagerApp {
 
     async syncWithCloud() {
         this.log.info('Syncing with cloud...');
+        
+        // Show syncing status
+        const statusMsg = document.createElement('div');
+        statusMsg.textContent = '🔄 Syncing...';
+        statusMsg.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background: #094771; color: white; padding: 10px 20px; border-radius: 8px; z-index: 10000;';
+        document.body.appendChild(statusMsg);
+        
         const data = storage.getData();
-        const result = await cloudSync.pushData(data);
+        const result = await window.cloudSync.pushDataWithSummary(data);
+        
+        statusMsg.remove();
         
         if (result.success) {
-            alert('✅ Sync successful!');
-            this.log.info('Sync completed', { version: result.version });
+            // Show detailed success message
+            const summary = result.summary;
+            const message = [
+                '✅ Cloud Sync Successful!',
+                '',
+                '📊 Uploaded:',
+                `   📚 Workbooks: ${summary.workbooks}`,
+                `   👤 Profiles: ${summary.profiles}`,
+                `   🌍 Environments: ${summary.environments}`,
+                `   📑 Tabs: ${summary.tabs}`,
+                `   🔗 Links: ${summary.links}`,
+                '',
+                `📌 Version: ${result.version}`,
+                `🕐 Last sync: ${new Date().toLocaleString()}`
+            ].join('\n');
+            
+            alert(message);
+            this.log.info('Sync completed', { version: result.version, summary });
         } else {
-            alert('❌ Sync failed: ' + result.error);
+            // Show detailed error message
+            const summary = result.summary || { workbooks: 0, profiles: 0, environments: 0, tabs: 0, links: 0 };
+            const message = [
+                '❌ Cloud Sync Failed!',
+                '',
+                '📊 Attempted to upload:',
+                `   📚 Workbooks: ${summary.workbooks}`,
+                `   👤 Profiles: ${summary.profiles}`,
+                `   🌍 Environments: ${summary.environments}`,
+                `   📑 Tabs: ${summary.tabs}`,
+                `   🔗 Links: ${summary.links}`,
+                '',
+                `Error: ${result.error}`,
+                '',
+                '💡 Tip: Check your internet connection and try again.'
+            ].join('\n');
+            
+            alert(message);
             this.log.error('Sync failed', result.error);
         }
+    }
+
+    async pullFromCloud() {
+        this.log.info('Pulling from cloud...');
+        
+        const statusMsg = document.createElement('div');
+        statusMsg.textContent = '🔄 Pulling from cloud...';
+        statusMsg.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background: #094771; color: white; padding: 10px 20px; border-radius: 8px; z-index: 10000;';
+        document.body.appendChild(statusMsg);
+        
+        const result = await window.cloudSync.pullData();
+        statusMsg.remove();
+        
+        if (result.success && result.hasData) {
+            const summary = this.calculateSummaryFromData(result.data);
+            const message = [
+                '✅ Data Pulled Successfully!',
+                '',
+                '📊 Downloaded from cloud:',
+                `   📚 Workbooks: ${summary.workbooks}`,
+                `   👤 Profiles: ${summary.profiles}`,
+                `   🌍 Environments: ${summary.environments}`,
+                `   📑 Tabs: ${summary.tabs}`,
+                `   🔗 Links: ${summary.links}`,
+                '',
+                '🔄 Reloading data...'
+            ].join('\n');
+            
+            alert(message);
+            
+            // Update local data with cloud data
+            const currentData = storage.getData();
+            currentData.workbooks = result.data.workbooks;
+            currentData.selectedWorkbookId = result.data.selectedWorkbookId;
+            currentData.selectedProfileId = result.data.selectedProfileId;
+            currentData.selectedEnvironmentId = result.data.selectedEnvironmentId;
+            currentData.selectedTabId = result.data.selectedTabId;
+            storage.updateData(currentData);
+            
+            this.log.info('Pull completed', { summary });
+        } else if (result.success && !result.hasData) {
+            alert('No data found on cloud. Push your local data first!');
+        } else {
+            alert(`❌ Pull failed: ${result.error}`);
+            this.log.error('Pull failed', result.error);
+        }
+    }
+
+    calculateSummaryFromData(data) {
+        let summary = { workbooks: 0, profiles: 0, environments: 0, tabs: 0, links: 0 };
+        
+        if (data.workbooks) {
+            summary.workbooks = data.workbooks.length;
+            data.workbooks.forEach(workbook => {
+                if (workbook.profiles) {
+                    summary.profiles += workbook.profiles.length;
+                    workbook.profiles.forEach(profile => {
+                        if (profile.environments) {
+                            summary.environments += profile.environments.length;
+                            profile.environments.forEach(env => {
+                                if (env.tabs) {
+                                    summary.tabs += env.tabs.length;
+                                    env.tabs.forEach(tab => {
+                                        if (tab.links) summary.links += tab.links.length;
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+        return summary;
     }
 
     async logoutAndSync() {
