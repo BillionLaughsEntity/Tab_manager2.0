@@ -254,6 +254,53 @@ class CloudSyncService {
             links: totalLinks
         };
     }
+
+    async pushData(data) {
+        if (!this.isAuthenticated()) {
+            return { success: false, error: 'Not authenticated' };
+        }
+        
+        // Add debug logging
+        console.log('📤 PUSHING DATA:');
+        console.log('  Workbooks:', data.workbooks.length);
+        data.workbooks.forEach((wb, i) => {
+            console.log(`  ${i}: ${wb.name} - Profiles: ${wb.profiles?.length || 0}`);
+            if (wb.profiles) {
+                wb.profiles.forEach(p => {
+                    console.log(`     👤 ${p.name} - Envs: ${p.environments?.length || 0}`);
+                });
+            }
+        });
+        
+        this.isSyncing = true;
+        
+        try {
+            const response = await fetch(`${this.apiUrl}/sync/push`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.token}`
+                },
+                body: JSON.stringify({ data })
+            });
+            
+            const result = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(result.error || 'Push failed');
+            }
+            
+            console.log('✅ Push successful, version:', result.version);
+            return { success: true, version: result.version };
+        } catch (error) {
+            console.error('❌ Push failed:', error);
+            return { success: false, error: error.message };
+        } finally {
+            this.isSyncing = false;
+        }
+    }
+
+
 }
 
 // Create global instance
